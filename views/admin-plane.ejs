@@ -1,0 +1,66 @@
+<% include admin-header %>
+<div class="row" > 
+	<div class="large-4 columns" >
+		<fieldset>
+			<legend>Add a new plane</legend>
+			<div class="row">
+				<div class="large-12">
+					<label for="aid">Airplane ID
+						<input type="text" id="plane.aid" name="aid" required="">
+					</label>
+				</div>
+				<div class="large-12">
+					<label for="type">Airplane Type
+						<select id="plane.type" name="type" required="">
+							<option value="a380">A380</option>
+							<option value="a330">A330</option>
+							<option value="a320">A320</option>
+							<option value="other">Other</option>
+						</select>
+					</label>
+				</div>
+				<div class="large-12">
+					<label for="seats">Seats
+						<input type="text" id="plane.seats" name="seats" required="">
+					</label>
+				</div>
+			</div>
+			<div class="row">
+			<div class="small-12 small-centered" style="text-align:center">
+				<a name="plane.submit" class="button radius">Add</a>
+			</div>
+			</div>
+		</fieldset>
+	</div>
+
+	<div class="large-8 columns">
+
+		<table style="margin:1.85rem 0;">
+			<thead>
+				<tr>
+					<th>Airplane ID</th>
+					<th>Airplane Type</th>
+					<th>Seats</th>
+				</tr>
+			</thead>
+			<tbody >
+				<tr>
+					<td>Content Goes Here</td>
+					<td>This is longer content Donec id elit non mi porta gravida at eget metus.</td>
+					<td>Content Goes Here</td>
+				</tr>
+				<tr>
+					<td>Content Goes Here</td>
+					<td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
+					<td>Content Goes Here</td>
+				</tr>
+				<tr>
+					<td>Content Goes Here</td>
+					<td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
+					<td>Content Goes Here</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>
+<% include footer %>
