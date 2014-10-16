@@ -1,7 +1,14 @@
     <script src="js/vendor/jquery.js"></script>
     <script src="js/foundation.min.js"></script>
     <script>
-      $(document).foundation();
+      $(document).foundation({
+      	abide: {
+      		patterns: {
+      			plane_id: /^[A-Z]{3}\d{3}$/,
+      		}
+      	}
+      });
+      
     </script>
   </body>
 </html>

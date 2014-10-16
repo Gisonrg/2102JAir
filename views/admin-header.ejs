@@ -5,7 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
     <link rel="stylesheet" href="css/foundation.css" />
+    <link rel="stylesheet" href="css/style.css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css">
     <script src="js/vendor/modernizr.js"></script>
+    <script src="js/vendor/jquery.js"></script>
   </head>
 
   <body>
@@ -39,3 +42,15 @@
     </ul>
   </section>
 </nav>
+<% if (success) { %>
+  <div data-alert id="success_alert" class="alert-box success round">
+  <%= success %>
+  <a href="#" class="close">&times;</a>
+  </div>
+<% } %>
+<% if (error) { %>
+  <div data-alert id="error_alert" class="alert-box alert round">
+  <%= error %>
+  <a href="#" class="close">&times;</a>
+  </div>
+<% } %>

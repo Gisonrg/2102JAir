@@ -1,66 +1,62 @@
 <% include admin-header %>
-<div class="row" > 
-	<div class="large-4 columns" >
+<div class="row"> 
+	<div class="large-3 columns" >
 		<fieldset>
 			<legend>Add a new plane</legend>
-			<div class="row">
-				<div class="large-12">
-					<label for="aid">Airplane ID
-						<input type="text" id="plane.aid" name="aid" required="">
-					</label>
+			<form id="add-new-plane-form" data-abide="ajax">
+				<div class="row">
+					<div class="large-12">
+						<label for="aid">Airplane ID
+							<input type="text" id="plane-aid" name="aid" required pattern="plane_id">
+						</label>
+						<small class="error">Airplane ID format can only be 3 Capital letters followed by 3 digits.</small>
+					</div>
+					<div class="large-12">
+						<label for="type">Airplane Type
+							<select id="plane-type" name="type">
+								<option value="a380">A380</option>
+								<option value="a330">A330</option>
+								<option value="a320">A320</option>
+								<option value="other">Other</option>
+							</select>
+						</label>
+					</div>
+					<div class="large-12">
+						<label for="seats">Seats
+							<input type="text" id="plane-seats" name="seats" required pattern="integer">
+						</label>
+						<small class="error">Seats can only be a valid number.</small>
+					</div>
 				</div>
-				<div class="large-12">
-					<label for="type">Airplane Type
-						<select id="plane.type" name="type" required="">
-							<option value="a380">A380</option>
-							<option value="a330">A330</option>
-							<option value="a320">A320</option>
-							<option value="other">Other</option>
-						</select>
-					</label>
+
+				<div class="small-12 small-centered" style="text-align:center">
+					<button id="plane-submit" type="submit" style="outline:none;">Add</button>
 				</div>
-				<div class="large-12">
-					<label for="seats">Seats
-						<input type="text" id="plane.seats" name="seats" required="">
-					</label>
-				</div>
-			</div>
-			<div class="row">
-			<div class="small-12 small-centered" style="text-align:center">
-				<a name="plane.submit" class="button radius">Add</a>
-			</div>
-			</div>
+
+			</form>
 		</fieldset>
 	</div>
 
-	<div class="large-8 columns">
+	<div class="large-9 columns">
 
 		<table style="margin:1.85rem 0;">
 			<thead>
 				<tr>
-					<th>Airplane ID</th>
-					<th>Airplane Type</th>
-					<th>Seats</th>
+					<th style="text-align:center;">Airplane ID</th>
+					<th style="text-align:center;">Airplane Type</th>
+					<th style="text-align:center;">Seats</th>
+					<th style="text-align:center;">Option</th>
 				</tr>
 			</thead>
-			<tbody >
-				<tr>
-					<td>Content Goes Here</td>
-					<td>This is longer content Donec id elit non mi porta gravida at eget metus.</td>
-					<td>Content Goes Here</td>
-				</tr>
-				<tr>
-					<td>Content Goes Here</td>
-					<td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
-					<td>Content Goes Here</td>
-				</tr>
-				<tr>
-					<td>Content Goes Here</td>
-					<td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
-					<td>Content Goes Here</td>
-				</tr>
+			<tbody id="data-entry">
+
+				
 			</tbody>
 		</table>
 	</div>
 </div>
+
+
+
+<script type="text/javascript" src="js/admin/plane.js"></script>
 <% include footer %>
