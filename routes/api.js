@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Plane = require("../model/plane.js");
+var Airport = require("../model/airport.js");
 /* GET a list of users */
 router.get('/users', function(req, res) {
 	res.send('getting all users');
@@ -60,6 +61,54 @@ router.delete('/plane/:plane_id', function(req, res) {
 		}
 	});
 });
+
+router.get('/airport', function(req, res) {
+	Airport.getAll(function (err, data) {
+		if (err) {
+			res.writeHead(200, {
+				'Content-Type': 'application/json'
+			});
+			res.end(JSON.stringify({"status":"error", "error": err}));
+		} else {
+			res.writeHead(200, {
+				'Content-Type': 'application/json'
+			});
+			res.end(JSON.stringify(data));
+		}
+	});
+});
+
+/* POST creates a new airport */
+router.post('/airport', function(req, res) {
+	var airport = new Airport(req.body.code, req.body.name, req.body.city, req.body.country);
+	airport.save(function(err) {
+		if (err) {
+			res.writeHead(200, {
+				'Content-Type': 'application/json'
+			});
+			res.end(JSON.stringify({"status":"error", "error": err.code}));
+		} else {
+			res.writeHead(200, {
+				'Content-Type': 'application/json'
+			});
+			res.end(JSON.stringify({"status":"ok"}));
+		}
+	});
+});
+
+/* DELETE removes a airport */
+router.delete('/airport/:airport_code', function(req, res) {
+	Airport.remove({"code":req.params.airport_code},function(err) {
+		if (err) {
+			res.json({"status":"error", "error": err.code});
+		} else {
+			res.json({"status":"ok"});
+		}
+	});
+});
+
+
+
 
 router.get('/flights', function(req, res) {
 	res.send('getting all flights');

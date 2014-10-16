@@ -1,5 +1,66 @@
 <% include admin-header %>
+<div class="row"> 
+	<div class="large-3 columns" >
+		<fieldset>
+			<legend>Add a new airport</legend>
+			<form id="add-new-airport-form" data-abide="ajax">
+				<div class="row">
+					<div class="large-12">
+						<label for="code">Airport Code
+							<input type="text" id="airport_code" name="code" required pattern="airport_code">
+						</label>
+						<small class="error">Airport Code format can only be 3 Capital letters.</small>
+					</div>
+					<div class="large-12">
+						<label for="name">Airport Name
+							<input type="text" id="airport_name" name="name" required pattern="non_empty">
+						</label>
+						<small class="error">Please enter a valid name.</small>
+					</div>
+					<div class="large-12">
+						<label for="city">City
+							<input type="text" id="airport_city" name="city" required pattern="non_empty">
+						</label>
+						<small class="error">Please enter a valid name.</small>
+					</div>
+					<div class="large-12">
+						<label for="city">Country
+							<input type="text" id="airport_country" name="country" required pattern="non_empty">
+						</label>
+						<small class="error">Please enter a valid name.</small>
+					</div>
+				</div>
+
+				<div class="small-12 small-centered" style="text-align:center">
+					<button id="airport-submit" type="submit" style="outline:none;">Add</button>
+				</div>
+
+			</form>
+		</fieldset>
+	</div>
+
+	<div class="large-9 columns">
+
+		<table style="margin:1.85rem 0;">
+			<thead>
+				<tr>
+					<th style="text-align:center;">Code</th>
+					<th style="text-align:center;">Name</th>
+					<th style="text-align:center;">City</th>
+					<th style="text-align:center;">Country</th>
+					<th style="text-align:center;">Option</th>
+				</tr>
+			</thead>
+			<tbody id="data-entry">
+
+				
+			</tbody>
+		</table>
+	</div>
+</div>
 
 
+
+<script type="text/javascript" src="js/admin/airport.js"></script>
     
 <% include footer %>
