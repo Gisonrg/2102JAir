@@ -29,7 +29,8 @@ Airport.getAll = function(callback) {
 Airport.remove = function(airport, callback) {
   pool.getConnection(function(err, connection) {
     // Use the connection
-    connection.query('DELETE from airport where ?', airport, function(err, rows, fields) {
+    connection.query('DELETE from airport where ?', airport, function(err,
+      rows, fields) {
       if (err) {
         console.log(err);
         return callback(err.code);
@@ -42,14 +43,15 @@ Airport.remove = function(airport, callback) {
 
 Airport.prototype.save = function(callback) {
   var airport = {
-      code: this.code,
-      name: this.name,
-      city: this.city,
-      country: this.country
+    code: this.code,
+    name: this.name,
+    city: this.city,
+    country: this.country
   };
   pool.getConnection(function(err, connection) {
     // Use the connection
-    connection.query('INSERT INTO airport SET ?', airport, function(err, result) {
+    connection.query('INSERT INTO airport SET ?', airport, function(err,
+      result) {
       if (err) {
         console.log(err);
         return callback(err.code);
