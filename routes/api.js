@@ -14,16 +14,19 @@ router.post('/users', function(req, res) {
 
 /* GET a user */
 router.get('/users/:id', function(req, res) {
-	res.send('getting a user whose id is '+req.params.id);
+	res.send('getting a user whose id is ' + req.params.id);
 });
 
 router.get('/plane', function(req, res) {
-	Plane.getAll(function (err, data) {
+	Plane.getAll(function(err, data) {
 		if (err) {
 			res.writeHead(200, {
 				'Content-Type': 'application/json'
 			});
-			res.end(JSON.stringify({"status":"error", "error": err}));
+			res.end(JSON.stringify({
+				"status": "error",
+				"error": err
+			}));
 		} else {
 			res.writeHead(200, {
 				'Content-Type': 'application/json'
@@ -41,34 +44,49 @@ router.post('/plane', function(req, res) {
 			res.writeHead(200, {
 				'Content-Type': 'application/json'
 			});
-			res.end(JSON.stringify({"status":"error", "error": err.code}));
+			res.end(JSON.stringify({
+				"status": "error",
+				"error": err.code
+			}));
 		} else {
 			res.writeHead(200, {
 				'Content-Type': 'application/json'
 			});
-			res.end(JSON.stringify({"status":"ok"}));
+			res.end(JSON.stringify({
+				"status": "ok"
+			}));
 		}
 	});
 });
 
 /* DELETE removes a plane */
 router.delete('/plane/:plane_id', function(req, res) {
-	Plane.remove({"aid":req.params.plane_id},function(err) {
+	Plane.remove({
+		"aid": req.params.plane_id
+	}, function(err) {
 		if (err) {
-			res.json({"status":"error", "error": err.code});
+			res.json({
+				"status": "error",
+				"error": err.code
+			});
 		} else {
-			res.json({"status":"ok"});
+			res.json({
+				"status": "ok"
+			});
 		}
 	});
 });
 
 router.get('/airport', function(req, res) {
-	Airport.getAll(function (err, data) {
+	Airport.getAll(function(err, data) {
 		if (err) {
 			res.writeHead(200, {
 				'Content-Type': 'application/json'
 			});
-			res.end(JSON.stringify({"status":"error", "error": err}));
+			res.end(JSON.stringify({
+				"status": "error",
+				"error": err
+			}));
 		} else {
 			res.writeHead(200, {
 				'Content-Type': 'application/json'
@@ -86,27 +104,38 @@ router.post('/airport', function(req, res) {
 			res.writeHead(200, {
 				'Content-Type': 'application/json'
 			});
-			res.end(JSON.stringify({"status":"error", "error": err.code}));
+			res.end(JSON.stringify({
+				"status": "error",
+				"error": err.code
+			}));
 		} else {
 			res.writeHead(200, {
 				'Content-Type': 'application/json'
 			});
-			res.end(JSON.stringify({"status":"ok"}));
+			res.end(JSON.stringify({
+				"status": "ok"
+			}));
 		}
 	});
 });
 
 /* DELETE removes a airport */
 router.delete('/airport/:airport_code', function(req, res) {
-	Airport.remove({"code":req.params.airport_code},function(err) {
+	Airport.remove({
+		"code": req.params.airport_code
+	}, function(err) {
 		if (err) {
-			res.json({"status":"error", "error": err.code});
+			res.json({
+				"status": "error",
+				"error": err.code
+			});
 		} else {
-			res.json({"status":"ok"});
+			res.json({
+				"status": "ok"
+			});
 		}
 	});
 });
-
 
 
 

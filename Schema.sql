@@ -8,7 +8,7 @@ CREATE TABLE passenger (
 );
 
 CREATE TABLE administrator (
-	admin_id INTEGER NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	username VARCHAR(16) NOT NULL PRIMARY KEY,
 	name VARCHAR(128) NOT NULL,
 	password VARCHAR(40) NOT NULL,
 	status CHAR(5) CHECK(status='hired' OR status='fired')
