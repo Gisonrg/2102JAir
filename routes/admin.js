@@ -22,6 +22,9 @@ passport.use(new LocalStrategy({
     passwordField: 'password'
   },
   function(username, password, done) {
+    var md5 = crypto.createHash('md5'),
+        password = md5.update(password).digest('hex');
+        console.log(password);
     Admin.get(username, function(err, data) {
       
       if (err) {
