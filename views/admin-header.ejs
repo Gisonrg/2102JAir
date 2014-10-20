@@ -27,13 +27,14 @@
       <!-- Right Nav Section -->
       <ul class="right">
       <li><a>Hi, <%= username %></a></li>
+      <li class="divider"></li>
         <li><a href="/admin/logout">Logout</a></li>
       </ul>
       <!-- Left Nav Section -->
       <ul class="left">
         <li ><a href="/admin">Overview</a></li>
         <li class="has-dropdown">
-          <a>Manage</a>
+          <a href>Manage</a>
           <ul class="dropdown">
             <li><a href="/admin/user">User</a></li>
             <li><a href="/admin/airport">Airport</a></li>
@@ -46,6 +47,7 @@
       
       <% } else { %>
       <ul class="right">
+      <li class="divider"></li>
         <li><a href="/admin/login">Login</a></li>
       </ul>
       <% } %>
