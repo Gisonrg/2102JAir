@@ -1,0 +1,16 @@
+body {
+    background-image: url('../img/grey.png');
+    background-repeat: repeat;
+}
+
+.white-bg {
+	background-color: white;
+}
+
+.transparent-bg {
+	background-color:transparent;
+}
+
+.content {
+	padding: 2px auto;
+}

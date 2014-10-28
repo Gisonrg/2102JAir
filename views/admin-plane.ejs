@@ -1,0 +1,62 @@
+<% include admin-header %>
+
+<div class="row">
+	<div class="large-3 columns" >
+		<fieldset class="white-bg">
+			<legend class="transparent-bg">Add a new plane</legend>
+			<form id="add-new-plane-form" data-abide="ajax">
+				<div class="row">
+					<div class="large-12">
+						<label for="aid">Airplane ID
+							<input type="text" id="plane-aid" name="aid" required pattern="plane_id">
+						</label>
+						<small class="error">Airplane ID format can only be 3 Capital letters followed by 3 digits.</small>
+					</div>
+					<div class="large-12">
+						<label for="type">Airplane Type
+							<select id="plane-type" name="type">
+								<option value="a380">A380</option>
+								<option value="a330">A330</option>
+								<option value="a320">A320</option>
+								<option value="other">Other</option>
+							</select>
+						</label>
+					</div>
+					<div class="large-12">
+						<label for="seats">Seats
+							<input type="text" id="plane-seats" name="seats" required pattern="integer">
+						</label>
+						<small class="error">Seats can only be a valid number.</small>
+					</div>
+				</div>
+
+				<div class="small-12 small-centered" style="text-align:center">
+					<button id="plane-submit" type="submit" style="outline:none;">Add</button>
+				</div>
+
+			</form>
+		</fieldset>
+	</div>
+
+	<div class="large-9 columns">
+
+		<table style="margin:1.85rem 0;">
+			<thead>
+				<tr>
+					<th style="text-align:center;">Plane ID</th>
+					<th style="text-align:center;">Type</th>
+					<th style="text-align:center;">Seats</th>
+					<th style="text-align:center;">Option</th>
+				</tr>
+			</thead>
+			<tbody id="data-entry">
+
+
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+<script type="text/javascript" src="js/admin/plane.js"></script>
+<% include footer %>
