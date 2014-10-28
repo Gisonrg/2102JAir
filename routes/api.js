@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var Plane = require("../model/plane.js");
 var Airport = require("../model/airport.js");
+var User = require("../model/user.js");
 var Flight = require("../model/flight.js");
 
 function dateCompare(time1,time2) {
@@ -27,7 +28,16 @@ function convertToDisplayString(time) {
 
 /* GET a list of users */
 router.get('/users', function(req, res) {
-	res.send('getting all users');
+	User.getAll(function(err, data) {
+		if (err) {
+			res.json({
+				"status": "error",
+				"error": err.code
+			});
+		} else {
+			res.json(data);
+		}
+	})
 });
 
 /* POST create a new user */
