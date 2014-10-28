@@ -1,5 +1,104 @@
 <% include admin-header %>
+<div class="row">
+	<div class="large-3 columns" >
+		<fieldset class="white-bg">
+			<legend class="transparent-bg">Add a new flight</legend>
+			<form method="post" action="/api/flights" id="add-new-flight-form" data-abide>
+				<div class="row">
+					<div class="large-12">
+						<label for="fno">Flight No.
+							<input type="text" id="flight-no" name="fno" required pattern="flight_id">
+						</label>
+						<small class="error">Flight No. format can only "JA" followed by 3 number.</small>
+					</div>
+					<div class="large-12">
+						<label for="depart">Depart Time
+							<input type="text" id="flight-depart" name="depart_time" required>
+						</label>
+					</div>
+					<div class="large-12">
+						<label for="arrive">Arrive Time
+							<input type="text" id="flight-arrive" name="arrive_time" required>
+						</label>
+					</div>
+
+					<div class="large-12">
+						<label for="from">From Airport
+							<select id="flight-from" name="from">
+								<% airports.forEach(function (airport, index) { %>
+								<option value="<%= airport.code %>"><%= airport.code +" "+ airport.city %></option>
+								<% }) %>
+							</select>
+						</label>
+					</div>
+					<div class="large-12">
+						<label for="to">Destination Airport
+							<select id="flight-to" name="to">
+								<% airports.forEach(function (airport, index) { %>
+								<option value="<%= airport.code %>"><%= airport.code +" "+ airport.city %></option>
+								<% }) %>
+							</select>
+						</label>
+					</div>
+
+					<div class="large-12">
+						<label for="to">Plane
+							<select id="flight-plane" name="plane">
+								<% planes.forEach(function (plane, index) { %>
+								<option value="<%= plane.aid %>"><%= plane.aid +" "+ plane.type %></option>
+								<% }) %>
+							</select>
+						</label>
+					</div>
+				</div>
+
+				<div class="small-12 small-centered" style="text-align:center">
+					<button id="plane-submit" type="submit" style="outline:none;">Add</button>
+				</div>
+
+			</form>
+		</fieldset>
+	</div>
+
+	<div class="large-9 columns">
+
+		<table style="margin:1.85rem 0;">
+			<thead>
+				<tr>
+					<th style="text-align:center;">Flight No.</th>
+					<th style="text-align:center;">Depart Time</th>
+					<th style="text-align:center;">Arrive Time</th>
+					<th style="text-align:center;">Duration (min)</th>
+					<th style="text-align:center;">From</th>
+					<th style="text-align:center;">To</th>
+					<th style="text-align:center;">Plane ID</th>
+					<th style="text-align:center;">Options</th>
+				</tr>
+			</thead>
+			<tbody id="data-entry">
+				<% function convertToDisplayString(time) {
+					var parts = time.split(":");
+					return parts[0]+":"+parts[1];
+					};
+					flights.forEach(function (flight, index) { %>
+					<tr>
+						<td class="table-center"><%= flight.fno %></td>
+						<td class="table-center"><%= convertToDisplayString(flight.depart_time) %></td>
+						<td class="table-center"><%= convertToDisplayString(flight.arrive_time) %></td>
+						<td class="table-center"><%= flight.duration %></td>
+						<td class="table-center"><%= flight.origin %></td>
+						<td class="table-center"><%= flight.destination %></td>
+						<td class="table-center"><%= flight.plane_id %></td>
+						<td class="table-center"><i class="icon-remove icon-2x"></i></a></td>
+					</tr>
+				<% }) %>
+			</tbody>
+		</table>
+	</div>
+</div>
 
 
-    
+<script type="text/javascript" src="js/admin/flight.js"></script>
+
+
 <% include footer %>

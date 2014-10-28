@@ -2,6 +2,29 @@ var express = require('express');
 var router = express.Router();
 var Plane = require("../model/plane.js");
 var Airport = require("../model/airport.js");
+var Flight = require("../model/flight.js");
+
+function dateCompare(time1,time2) {
+  var t1 = new Date();
+  var parts = time1.split(":");
+  t1.setHours(parts[0],parts[1],0,0);
+  var t2 = new Date();
+  parts = time2.split(":");
+  t2.setHours(parts[0],parts[1],0,0);
+
+  return  (t2 - t1) / 1000 / 60; // in minutes
+}
+
+function convertTimeString(time) {
+  return time+":00";
+}
+
+function convertToDisplayString(time) {
+   var parts = time.split(":");
+   return parts[0]+":"+parts[1];
+}
+
+
 /* GET a list of users */
 router.get('/users', function(req, res) {
 	res.send('getting all users');
@@ -140,7 +163,39 @@ router.delete('/airport/:airport_code', function(req, res) {
 
 
 router.get('/flights', function(req, res) {
-	res.send('getting all flights');
+	Flight.getAll(function(err, data) {
+		if (err) {
+			res.json({
+				"status": "error",
+				"error": err.code
+			});
+		} else {
+			res.json(data);
+		}
+	});
+});
+
+router.post('/flights', function(req, res) {
+	var duration = dateCompare(req.body.depart_time, req.body.arrive_time);
+	var flight = 
+	new Flight(
+		req.body.fno,
+		convertTimeString(req.body.depart_time),
+		convertTimeString(req.body.arrive_time),
+		duration,
+		req.body.from,
+		req.body.to,
+		req.body.plane
+	);
+
+	flight.save(function(err) {
+		if (err) {
+			req.flash('error', err.code);
+		} else {
+			req.flash('success', "Added successfully.");
+		}
+		res.redirect('/admin/flight');
+	});
 });
 
 router.get('/flights/:id', function(req, res) {

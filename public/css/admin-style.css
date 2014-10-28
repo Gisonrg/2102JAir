@@ -14,3 +14,7 @@ body {
 .content {
 	padding: 2px auto;
 }
+
+.table-center {
+	text-align:center;
+}

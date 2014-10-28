@@ -5,6 +5,9 @@ var crypto = require('crypto');
 var passport = require('passport'),
   LocalStrategy = require('passport-local').Strategy;
 
+var Airport = require('../model/airport.js');
+var Plane = require('../model/plane.js');
+var Flight = require('../model/flight.js');
 // set up passport strategy
 passport.serializeUser(function(user, done) {
   done(null, user.username);
@@ -23,10 +26,10 @@ passport.use(new LocalStrategy({
   },
   function(username, password, done) {
     var md5 = crypto.createHash('md5'),
-        password = md5.update(password).digest('hex');
-        console.log(password);
+      password = md5.update(password).digest('hex');
+    console.log(password);
     Admin.get(username, function(err, data) {
-      
+
       if (err) {
         return done(err);
       }
@@ -55,7 +58,7 @@ router.get('/login', checkNotLogin); // make sure not login
 router.get('/login', function(req, res) {
   res.render('admin-login', {
     title: 'J-Air Admin Login',
-    username : req.session.passport.user,
+    username: req.session.passport.user,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -80,7 +83,7 @@ router.get('/', checkLogin);
 router.get('/', function(req, res) {
   res.render('admin', {
     title: 'J-Air Admin Dashboard',
-    username : req.session.passport.user,
+    username: req.session.passport.user,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -90,17 +93,17 @@ router.get('/airport', checkLogin);
 router.get('/airport', function(req, res) {
   res.render('admin-airport', {
     title: 'J-Air Admin | Manage Airport',
-    username : req.session.passport.user,
+    username: req.session.passport.user,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
 });
 
-router.get('/plane', checkLogin);
+// router.get('/plane', checkLogin);
 router.get('/plane', function(req, res) {
   res.render('admin-plane', {
     title: 'J-Air Admin | Manage Plane',
-    username : req.session.passport.user,
+    username: req.session.passport.user,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -110,19 +113,28 @@ router.get('/user', checkLogin);
 router.get('/user', function(req, res) {
   res.render('admin-user', {
     title: 'J-Air Admin | Manage User',
-    username : req.session.passport.user,
+    username: req.session.passport.user,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
 });
 
-router.get('/flight', checkLogin);
+// router.get('/flight', checkLogin);
 router.get('/flight', function(req, res) {
-  res.render('admin-flight', {
-    title: 'J-Air Admin | Manage Flight',
-    username : req.session.passport.user,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
+  Airport.getAll(function(err, airports) {
+    Plane.getAvaliable(function(err, planes) {
+      Flight.getAll(function(err, flights) {
+        res.render('admin-flight', {
+          title: 'J-Air Admin | Manage Flight',
+          username: req.session.passport.user,
+          success: req.flash('success').toString(),
+          error: req.flash('error').toString(),
+          airports: airports,
+          planes: planes,
+          flights: flights
+        })
+      })
+    })
   });
 });
 
@@ -130,7 +142,7 @@ router.get('/booking', checkLogin);
 router.get('/booking', function(req, res) {
   res.render('admin-booking', {
     title: 'J-Air Admin | Manage Booking',
-    username : req.session.passport.user,
+    username: req.session.passport.user,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });

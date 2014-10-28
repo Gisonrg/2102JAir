@@ -25,8 +25,28 @@ Plane.getAll = function(callback) {
   });
 };
 
+Plane.getAvaliable = function(callback) {
+  pool.getConnection(function(err, connection) {
+    // Use the connection
+    connection.query(
+      'SELECT * from airplane where aid NOT IN (SELECT plane_id FROM flight);', 
+      function(err, rows, fields) {
+      if (err) {
+        return callback(err.code, null);
+      }
+
+      var output = [];
+      for (var i in rows) {
+        output.push(rows[i]);
+      }
+      callback(null, output);
+
+      connection.release();
+    });
+  });
+};
+
 Plane.remove = function(plane, callback) {
-  console.log(plane.aid);
   pool.getConnection(function(err, connection) {
     // Use the connection
     connection.query('DELETE from airplane where ?', plane, function(err, rows, fields) {
