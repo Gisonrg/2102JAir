@@ -28,29 +28,30 @@ CREATE TABLE airport (
 );
 
 CREATE TABLE flight (
-	fno CHAR(5) NOT NULL, 
-	depart_time TIMESTAMP NOT NULL,
-	arrive_time TIMESTAMP NOT NULL,
+	fno CHAR(5) NOT NULL PRIMARY KEY, 
+	depart_time TIME NOT NULL,
+	arrive_time TIME NOT NULL,
 	duration INTEGER NOT NULL,
 	origin CHAR(3) REFERENCES airport(code) ON DELETE CASCADE,
 	destination CHAR(3) REFERENCES airport(code) ON DELETE CASCADE,
-	plane_id CHAR(6) REFERENCES airplane(aid) ON DELETE CASCADE,
+	plane_id CHAR(6) REFERENCES airplane(aid) ON DELETE CASCADE
 
-	PRIMARY KEY(fno, depart_time)
 );
 
 CREATE TABLE seat (
 	sid CHAR(3) NOT NULL,
 	flight_no CHAR(5), 
-	flight_time TIMESTAMP,
+	flight_time DATE,
+	-- For flight_time, it is which date the flight is departed.
+	-- If we want to retrieve the depart time, use flight_no to search flight.
 	seat_class VARCHAR(10) 
 		CHECK(seat_class='First' OR seat_class='Business' OR seat_class='Economy'),
 	available VARCHAR(6) CHECK(available = 'TRUE' OR available='FALSE'),
 	price FLOAT(10) NOT NULL,
 
 	PRIMARY KEY(sid, flight_no, flight_time),
-	FOREIGN KEY(flight_no, flight_time) 
-		REFERENCES flight(fno, depart_time) ON DELETE CASCADE
+	FOREIGN KEY(flight_no) 
+		REFERENCES flight(fno) ON DELETE CASCADE
 );
 
 
@@ -59,7 +60,7 @@ CREATE TABLE reservation (
 	book_time TIMESTAMP,
 	seat_id CHAR(3),
 	flight_no CHAR(5),
-	flight_time TIMESTAMP,
+	flight_time DATE,
 	passenger_id INTEGER REFERENCES passenger(pid) ON DELETE CASCADE,
 
 	FOREIGN KEY (seat_id, flight_no, flight_time) 
