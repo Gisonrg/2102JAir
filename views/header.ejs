@@ -26,14 +26,15 @@
       <% if (user) { %>
       <!-- Right Nav Section -->
       <ul class="right">
-      <li><a>Hi, <%= user.name %></a></li>
-      <li class="divider"></li>
+        <li><a>Hi, <%= user.name %></a></li>
+        <li class="divider"></li>
         <li><a href="/logout">Logout</a></li>
       </ul>
       <% } else { %>
       <ul class="right">
-      <li class="divider"></li>
+        <li class="divider"></li>
         <li><a href="/register">Register</a></li>
+        <li class="divider"></li>
         <li><a href="/login">Login</a></li>
       </ul>
       <% } %>

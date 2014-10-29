@@ -37,10 +37,8 @@ User.get = function(email, callback) {
         return callback(err.code, null);
       }
 
-      var output = [];
-      for (var i in rows) {
-        output.push(rows[i]);
-      }
+      var output = rows[0];
+      console.log("user.js: User found: " + output);
       callback(null, output);
 
       connection.release();
