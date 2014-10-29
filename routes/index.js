@@ -7,7 +7,9 @@ var crypto = require('crypto');
 router.get('/', function(req, res) {
   res.render('home', { 
   	title: 'J-Air | Home',
-  	user : req.session.user
+  	user : req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
   });
 });
 
@@ -15,7 +17,9 @@ router.get('/', function(req, res) {
 router.get('/search', function(req, res) {
   res.render('search', { 
   	title: 'J-Air | Search',
-  	user : req.session.user
+  	user : req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
   });
 });
 
@@ -24,7 +28,9 @@ router.get('/login', checkNotLogin);
 router.get('/login', function(req, res) {
   res.render('login', { 
   	title: 'J-Air | Login',
-  	user : req.session.user
+  	user : req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
   });
 });
 
@@ -32,32 +38,46 @@ router.get('/login', function(req, res) {
 router.post('/login', checkNotLogin);
 router.post('/login', function(req, res){
   var email = req.body.email,
-  password = req.body.password;
-  var md5 = crypto.createHash('md5');
-  password = md5.update(password).digest('hex');
-  
-  User.get(email, function (err, user){
-    if(user.length!=0){ // user found
+  password = req.body.password; 
+  if(email == "" || password == ""){ // incomplete information
+    req.flash('error', 'Please complete the login information');
+    return res.redirect('/login');
+  } else{
+    var md5 = crypto.createHash('md5');
+    password = md5.update(password).digest('hex');
+    User.get(email, function (err, user){
+
+    if(user){ // user found
       if(user.password != password){ // wrong password
-        req.flash('error', 'Wrong password');
+        req.flash('error', 'Wrong Password');
         return res.redirect('/login');
       }
       else{ // login successfully
         req.session.user = user;
-        req.flash('success','Login successfully');
+        req.flash('success','Login Successfully');
         return res.redirect('/');
       }
     }else{ // no such user
-      req.flash('error', 'Email does not exist');
+      req.flash('error', 'Wrong Email');
       return res.redirect('/login');
     }
   })
+  }
 });
 
+router.get('/logout', checkLogin);
+router.get('/logout', function (req, res) {
+  req.session.user = null;
+  res.redirect('/');
+});
 
 /* GET register page. */
 router.get('/register', function(req, res) {
-  res.render('register', { title: 'J-Air | Register',user : req.session.user });
+  res.render('register', { title: 'J-Air | Register',
+    user : req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
+  });
 });
 
 

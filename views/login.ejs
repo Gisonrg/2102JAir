@@ -1,6 +1,17 @@
 <% include header %>
 <div class="row" style="margin:2% auto; width:70%; text-align:center;">
 	<h2>Passenger Login</h2>
+	<article>
+		<% if (success) { %>
+		<div style = "color: green"><%= success %></div>
+		<% } %>
+		<% if (error == 'Wrong Password' || error == "Please complete the login information") { %>
+		<div style = "color: red"><%= error %> </div>
+		<% } if(error == 'Wrong Email'){ %>
+		<div>New User? Click <a href="/register">here</a> to register.</div>
+		<div style = "color: red"><%= error %> </div>
+		<% } %>
+	</article>
 	<p>
 		<form method="post" action="/login">
 			<div class="medium-8 medium-centered columns">
@@ -20,13 +31,11 @@
 						<input type="password" id="password" name="password" placeholder="Enter your password">
 					</div>
 				</div>
-
 			</div>
 			<div class="medium-4 medium-centered columns end" style="text-align:center;">
 				<button class="button" type="submit">Login</button>
 			</div>
 		</form>
-
 	</p>
 </div>
 
