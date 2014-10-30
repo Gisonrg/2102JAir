@@ -47,12 +47,13 @@ router.post('/login', function(req, res){
     password = md5.update(password).digest('hex');
     User.get(email, function (err, user){
 
-    if(user){ // user found
+    if(user.length!=0){ // user found
+      user = user[0];
+      console.log(user.password +" "+password);
       if(user.password != password){ // wrong password
         req.flash('error', 'Wrong Password');
         return res.redirect('/login');
-      }
-      else{ // login successfully
+      } else{ // login successfully
         req.session.user = user;
         req.flash('success','Login Successfully');
         return res.redirect('/');
@@ -92,8 +93,9 @@ router.post('/register', function(req, res) {
 
   var newUser = new User(name, passport, email, password, contact);
   User.get(newUser.email, function (err, user) {
+    console.log(user);
     if (user.length!=0) {
-      req.flash('error', 'User is existing!');
+      req.flash('error', 'User already exists!');
       return res.redirect('/register');
     }
     newUser.add(function (err, user) {
@@ -101,7 +103,8 @@ router.post('/register', function(req, res) {
         req.flash('error', err);
         return res.redirect('/register');
       }
-      req.session.user = user;
+      req.session.user = newUser;
+      // where should we display this success message?
       req.flash('success', 'registered successfully!');
       res.redirect('/');
     });
