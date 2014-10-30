@@ -1,0 +1,113 @@
+<% include admin-header %>
+
+<div class="row">
+	<dl class="accordion" data-accordion>
+		<dd class="accordion-navigation">
+			<a href="#panel1">Adding Seats</a>
+			<div id="panel1" class="content active">
+				<div class="large-12 large-centered" >
+					<fieldset class="white-bg">
+						<legend class="transparent-bg">Add seats for flight</legend>
+						<form method="post" action="/api/seats" id="add-new-seat-form">
+							<div class="large-6 column">
+								<label for="flight">Flight
+									<select name="flight">
+										<% flights.forEach(function (flight, index) { %>
+										<option value="<%= flight.fno %>"><%= flight.fno +" From "+ flight.origin + " To: " + flight.destination +" Seats:"+flight.seats%></option>
+										<% }) %>
+									</select>
+								</label>
+							</div>
+							<div class="large-3 column">
+								<label for="fromDate">Add seats from date
+									<input id="from" name="fromDate" type="text" required>
+								</label>
+							</div>
+
+							<div class="large-3 column">
+
+								<label for="toDate">to date
+									<input id="to" name="toDate" type="text" required>
+								</label>
+							</div>
+							<div class="large-6 column">
+								<label for="no_first">No. First class seats
+									<input name="no_first" type="text" required>
+								</label>
+							</div>
+							<div class="large-6 column">
+								<label for="price_first">Price
+									<input name="price_first" type="text" required>
+								</label>
+							</div>
+							<div class="large-6 column">
+								<label for="no_biz">No. Business class seats
+									<input name="no_biz" type="text" required>
+								</label>
+							</div>
+							<div class="large-6 column">
+								<label for="price_biz">Price
+									<input name="price_biz" type="text" required>
+								</label>
+							</div>
+							<div class="large-6 column">
+								<label for="no_econ">No. Economy class seats
+									<input name="no_econ" type="text" required>
+								</label>
+							</div>
+							<div class="large-6 column">
+								<label for="price_econ">Price
+									<input name="price_econ" type="text" required>
+								</label>
+							</div>
+
+							<div class="small-12 small-centered" style="text-align:center">
+								<button id="plane-submit" type="submit" style="outline:none;">Add</button>
+							</div>
+						</form>
+					</fieldset>
+				</div>
+
+			</div>
+		</dd>
+		<dd class="accordion-navigation">
+			<a href="#panel2">Searching Seats</a>
+			<div id="panel2" class="content">
+
+			</div>
+		</dd>
+		<dd class="accordion-navigation">
+			<a href="#panel3">Results</a>
+			<div id="panel3" class="content">
+				<div class="large-12 large-centered">
+
+					<table style="margin:1.85rem 0;">
+						<thead>
+							<tr>
+								<th style="text-align:center;">Flight No.</th>
+								<th style="text-align:center;">Flight Date</th>
+								<th style="text-align:center;">Seat Class</th>
+								<th style="text-align:center;">Seat ID</th>
+								<th style="text-align:center;">Avaliable</th>
+								<th style="text-align:center;">Price</th>
+								<th style="text-align:center;">Options</th>
+							</tr>
+						</thead>
+						<tbody id="data-entry">
+
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</dd>
+	</dl>
+
+
+	
+</div>
+
+
+<script type="text/javascript" src="js/admin/seat.js"></script>
+
+
+<% include footer %>

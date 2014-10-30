@@ -138,6 +138,19 @@ router.get('/flight', function(req, res) {
   });
 });
 
+router.get('/seat', function(req, res) {
+  Flight.getAll(function(err, flights) {
+    res.render('admin-seat', {
+      title: 'J-Air Admin | Manage Seats',
+      username: req.session.passport.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString(),
+      flights: flights
+    })
+  });
+});
+
+
 router.get('/booking', checkLogin);
 router.get('/booking', function(req, res) {
   res.render('admin-booking', {

@@ -10,10 +10,30 @@ function Flight(fno, depart, arrive, duration, origin, destination, plane_id) {
   this.plane_id = plane_id;
 }
 
+Flight.get = function(fno, callback) {
+  pool.getConnection(function(err, connection) {
+    console.log(fno);
+    // Use the connection
+    connection.query('SELECT * from flight, airplane where airplane.aid = flight.plane_id and ? ', fno,function(err, rows, fields) {
+      if (err) {
+        return callback(err.code, null);
+      }
+
+      var output = [];
+      for (var i in rows) {
+        output.push(rows[i]);
+      }
+      callback(null, output);
+
+      connection.release();
+    });
+  });
+};
+
 Flight.getAll = function(callback) {
   pool.getConnection(function(err, connection) {
     // Use the connection
-    connection.query('SELECT * from flight', function(err, rows, fields) {
+    connection.query('SELECT * from flight, airplane where airplane.aid = flight.plane_id', function(err, rows, fields) {
       if (err) {
         return callback(err.code, null);
       }

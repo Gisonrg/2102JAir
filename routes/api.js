@@ -1,28 +1,34 @@
 var express = require('express');
 var router = express.Router();
+
 var Plane = require("../model/plane.js");
 var Airport = require("../model/airport.js");
 var User = require("../model/user.js");
 var Flight = require("../model/flight.js");
+var Seat = require("../model/seat.js");
 
 function dateCompare(time1,time2) {
-  var t1 = new Date();
-  var parts = time1.split(":");
-  t1.setHours(parts[0],parts[1],0,0);
-  var t2 = new Date();
-  parts = time2.split(":");
-  t2.setHours(parts[0],parts[1],0,0);
+	var t1 = new Date();
+	var parts = time1.split(":");
+	t1.setHours(parts[0],parts[1],0,0);
+	var t2 = new Date();
+	parts = time2.split(":");
+	t2.setHours(parts[0],parts[1],0,0);
 
   return  (t2 - t1) / 1000 / 60; // in minutes
 }
 
 function convertTimeString(time) {
-  return time+":00";
+	return time+":00";
+}
+
+function convertDateString(time) {
+	return time.replace(/\//g, "-");
 }
 
 function convertToDisplayString(time) {
-   var parts = time.split(":");
-   return parts[0]+":"+parts[1];
+	var parts = time.split(":");
+	return parts[0]+":"+parts[1];
 }
 
 
@@ -185,6 +191,21 @@ router.get('/flights', function(req, res) {
 	});
 });
 
+router.get('/flights/:fno', function(req, res) {
+	Flight.get({
+		"fno": req.params.fno
+	}, function(err, data) {
+		if (err) {
+			res.json({
+				"status": "error",
+				"error": err.code
+			});
+		} else {
+			res.json(data);
+		}
+	});
+});
+
 router.post('/flights', function(req, res) {
 	var duration = dateCompare(req.body.depart_time, req.body.arrive_time);
 	var flight = 
@@ -196,7 +217,7 @@ router.post('/flights', function(req, res) {
 		req.body.from,
 		req.body.to,
 		req.body.plane
-	);
+		);
 
 	flight.save(function(err) {
 		if (err) {
@@ -207,6 +228,111 @@ router.post('/flights', function(req, res) {
 		res.redirect('/admin/flight');
 	});
 });
+
+function parseDate(date) {
+	var day = date.split('/');
+	var output = new Date();
+	output.setFullYear(day[0]);
+	output.setMonth(day[1]-1);
+	output.setDate(day[2]);
+	return output;
+}
+
+function convertDateString(date) {
+	return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
+}
+function daydiff(first, second) {
+	return Math.floor((second-first)/(1000*60*60*24))+1;
+}
+
+router.get('/seats', function(req,res) {
+	if (Object.keys(req.query).length==0) {
+		Seat.getAll(function(error, data){
+			res.send(data);
+		});
+	} else {
+		console.log(req.query);
+		Seat.search(req.query, function(error, data){
+			res.send(data);
+		});
+	}
+	
+});
+
+
+router.post('/seats', function(req, res) {
+	var flight_no = req.body.flight;
+	var startDay = parseDate(req.body.fromDate);
+	var endDay = parseDate(req.body.toDate);
+
+	var no_first = parseInt(req.body.no_first);
+	var price_first = req.body.price_first;
+
+	var no_biz = parseInt(req.body.no_biz);
+	var price_biz = req.body.price_biz;
+
+	var no_econ = parseInt(req.body.no_econ);
+	var price_econ = req.body.price_econ;
+
+	Flight.get({
+		"fno": flight_no
+	}, function(err, data) {
+		if (err) {
+
+		} else {
+			var totalSeats = data[0].seats;
+			if ((no_first + no_biz + no_econ) != totalSeats) {
+				req.flash('error', "Your total seats entered should equal to number of seats of the plane.");
+				return res.redirect('/admin/seat');
+			} else {
+				// how many days to add
+				var days = daydiff(startDay, endDay);
+
+				var current_day = startDay;
+
+				for (var i = 0; i < days; i++) {
+					var today = convertDateString(current_day);
+					// add first class seats
+					for (var j = 0; j < no_first; j++) {
+						var newSeat =
+							new Seat("F" + (j + 1), flight_no, today, "First", "TRUE", price_first);
+						newSeat.save(function(err) {
+							if (err) {
+								console.log(err);
+							}
+						});
+					}
+					// add biz class seats
+					for (var j = 0; j < no_biz; j++) {
+						var newSeat =
+							new Seat("B" + (j + 1), flight_no, today, "Business", "TRUE", price_biz);
+						newSeat.save(function(err) {
+							if (err) {
+								console.log(err);
+							}
+						});
+					}
+					// add econ class seats
+					for (var j = 0; j < no_econ; j++) {
+						var newSeat =
+							new Seat("E" + (j + 1), flight_no, today, "Economy", "TRUE", price_econ);
+						newSeat.save(function(err) {
+							if (err) {
+								console.log(err);
+							}
+						});
+					}
+					current_day.setDate(current_day.getDate() + 1);
+				};
+				req.flash('success', "Added successfully.");
+				return res.redirect('/admin/seat');
+			}
+		}
+	});
+});
+
+
+
 
 router.get('/flights/:id', function(req, res) {
 	res.send('getting a flight information');
