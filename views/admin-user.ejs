@@ -1,5 +1,36 @@
 <% include admin-header %>
+<div class="row">
 
+	<div class="large-12">
+
+		<table style="margin:1.85rem 0;">
+			<thead>
+				<tr>
+					<th style="text-align:center;">ID</th>
+					<th style="text-align:center;">Name</th>
+					<th style="text-align:center;">Passport</th>
+					<th style="text-align:center;">Email</th>
+					<th style="text-align:center;">Contact</th>
+					<th style="text-align:center;">Options</th>
+				</tr>
+			</thead>
+			<tbody id="data-entry">
+				<% if (users.length == 0) {%>
+					<tr><td colspan="4" style="text-align:center;"><i>Empty</i></td></tr>
+					<%} else {users.forEach(function (user, index) { %>
+					<tr>
+						<td class="table-center"><%= user.pid %></td>
+						<td class="table-center"><%= user.name %></td>
+						<td class="table-center"><%= user.passport %></td>
+						<td class="table-center"><%= user.email %></td>
+						<td class="table-center"><%= user.contact %></td>
+						<td class="table-center"><i class="icon-remove icon-2x"></i></a></td>
+					</tr>
+				<% })} %>
+			</tbody>
+		</table>
+	</div>
+</div>
 
     
 <% include footer %>

@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var Admin = require('../model/admin.js');
+var User = require('../model/user.js');
 var crypto = require('crypto');
 var passport = require('passport'),
   LocalStrategy = require('passport-local').Strategy;
@@ -99,7 +100,7 @@ router.get('/airport', function(req, res) {
   });
 });
 
-// router.get('/plane', checkLogin);
+router.get('/plane', checkLogin);
 router.get('/plane', function(req, res) {
   res.render('admin-plane', {
     title: 'J-Air Admin | Manage Plane',
@@ -111,15 +112,18 @@ router.get('/plane', function(req, res) {
 
 router.get('/user', checkLogin);
 router.get('/user', function(req, res) {
-  res.render('admin-user', {
-    title: 'J-Air Admin | Manage User',
-    username: req.session.passport.user,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
+  User.getAll(function(err, users) {
+    res.render('admin-user', {
+      title: 'J-Air Admin | Manage User',
+      username: req.session.passport.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString(),
+      users: users
+    });
   });
 });
 
-// router.get('/flight', checkLogin);
+router.get('/flight', checkLogin);
 router.get('/flight', function(req, res) {
   Airport.getAll(function(err, airports) {
     Plane.getAvaliable(function(err, planes) {
