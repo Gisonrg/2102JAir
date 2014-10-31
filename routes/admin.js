@@ -142,6 +142,7 @@ router.get('/flight', function(req, res) {
   });
 });
 
+router.get('/seat', checkLogin);
 router.get('/seat', function(req, res) {
   Flight.getAll(function(err, flights) {
     res.render('admin-seat', {
