@@ -245,18 +245,31 @@ function daydiff(first, second) {
 	return Math.floor((second-first)/(1000*60*60*24))+1;
 }
 
-router.get('/seats', function(req,res) {
-	if (Object.keys(req.query).length==0) {
-		Seat.getAll(function(error, data){
-			res.send(data);
+router.get('/seats', function(req, res) {
+	if (Object.keys(req.query).length == 0) {
+		Seat.getAll(function(error, data) {
+			if (error) {
+				res.json({
+					"status": "error",
+					"error": error.code
+				});
+			} else {
+				res.json(data);
+			}
 		});
 	} else {
 		console.log(req.query);
-		Seat.search(req.query, function(error, data){
-			res.send(data);
+		Seat.search(req.query, function(error, data) {
+			if (error) {
+				res.json({
+					"status": "error",
+					"error": error.code
+				});
+			} else {
+				res.json(data);
+			}
 		});
 	}
-	
 });
 
 

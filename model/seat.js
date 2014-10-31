@@ -1,11 +1,11 @@
 var pool = require('./db');
 
-function Seat(sid, flight_no, flight_time, seat_class, available, price) {
+function Seat(sid, flight_no, flight_time, seat_class, avaliable, price) {
   this.sid = sid;
   this.flight_no = flight_no;
   this.flight_time = flight_time;
   this.seat_class = seat_class;
-  this.available = available;
+  this.avaliable = avaliable;
   this.price = price;
 }
 
@@ -47,11 +47,26 @@ Seat.getAll = function(callback) {
   });
 };
 
+function prepareQuery(condition) {
+  var query = "";
+  var length = Object.keys(condition).length;
+  var count = 0;
+  for (var entry in condition) {
+    query+=entry+" = '"+condition[entry]+"'";
+    if ((count+1)<length) {
+      query+=" and ";
+    }
+    count++;
+  }
+  return query;
+}
+
 Seat.search = function(condition, callback) {
-  console.log("condition: " + condition);
+  var query = 'SELECT sid, flight_no, DATE_FORMAT(flight_time, "%Y/%m/%d") as flight_time, seat_class, avaliable, price from seat where '+prepareQuery(condition);
+  query+=" ORDER BY sid"
   pool.getConnection(function(err, connection) {
     // Use the connection
-    connection.query('SELECT * from seat where ?', condition, function(err, rows, fields) {
+    connection.query(query, function(err, rows, fields) {
       if (err) {
         return callback(err.code, null);
       }
@@ -86,7 +101,7 @@ Seat.prototype.save = function(callback) {
     flight_no: this.flight_no,
     flight_time: this.flight_time,
     seat_class: this.seat_class,
-    available: this.available,
+    avaliable: this.avaliable,
     price: this.price
   };
 

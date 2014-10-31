@@ -73,12 +73,39 @@
 		<dd class="accordion-navigation">
 			<a href="#panel2">Searching Seats</a>
 			<div id="panel2" class="content">
+				<div class="large-12 large-centered" >
+					<fieldset class="white-bg">
+						<legend class="transparent-bg">Searching Seats</legend>
+						<form id="searching-seat-form">
+							<div class="large-4 column">
+								<label for="flight">Flight
+									<select name="flight" id="search_fno">
+										<% flights.forEach(function (flight, index) { %>
+										<option value="<%= flight.fno %>"><%= flight.fno +" From "+ flight.origin + " To: " + flight.destination +" Seats:"+flight.seats%></option>
+										<% }) %>
+									</select>
+								</label>
+							</div>
+							<div class="large-3 column">
+								<label for="search_date">Date
+									<input id="search_date" name="search_date" type="text" required>
+								</label>
+							</div>
+							<div class="large-3 column">
+								<label for="fromDate">Avaliable
+									<select id="search_avaliable">
+										<option value="TRUE">True</option>
+										<option value="FALSE">False</option>
+									</select>
+								</label>
+							</div>
 
-			</div>
-		</dd>
-		<dd class="accordion-navigation">
-			<a href="#panel3">Results</a>
-			<div id="panel3" class="content">
+							<div class="small-12 small-centered" style="text-align:center">
+								<button id="seat_submit" style="outline:none;">Search</button>
+							</div>
+						</form>
+					</fieldset>
+				</div>
 				<div class="large-12 large-centered">
 
 					<table style="margin:1.85rem 0;">
