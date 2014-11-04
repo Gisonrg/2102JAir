@@ -26,7 +26,13 @@
       <% if (user) { %>
       <!-- Right Nav Section -->
       <ul class="right">
-        <li><a>Hi, <%= user.name %></a></li>
+        <li class="has-dropdown">
+          <a href="#">Hi, <%= user.name %>!</a>
+          <ul class="dropdown">
+            <li><a href="/profile">My Profile</a></li>
+            <li><a href="/booking">My Bookings</a></li>
+          </ul>
+        </li>
         <li class="divider"></li>
         <li><a href="/logout">Logout</a></li>
       </ul>

@@ -34,6 +34,28 @@ router.get('/login', function(req, res) {
   });
 });
 
+/* GET profile page. */
+router.get('/profile', checkLogin);
+router.get('/profile', function(req, res) {
+  res.render('profile', { 
+    title: 'J-Air | My Profile',
+    user : req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
+  });
+});
+
+/* GET booking page. */
+router.get('/booking', checkLogin);
+router.get('/booking', function(req, res) {
+  res.render('booking', { 
+    title: 'J-Air | My Bookings',
+    user : req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
+  });
+});
+
 /* POST User login request */
 router.post('/login', checkNotLogin);
 router.post('/login', function(req, res){
