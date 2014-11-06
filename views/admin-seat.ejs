@@ -11,7 +11,7 @@
 						<form method="post" action="/api/seats" id="add-new-seat-form">
 							<div class="large-6 column">
 								<label for="flight">Flight
-									<select name="flight">
+									<select id="flight" name="flight">
 										<% flights.forEach(function (flight, index) { %>
 										<option value="<%= flight.fno %>"><%= flight.fno +" From "+ flight.origin + " To: " + flight.destination +" Seats:"+flight.seats%></option>
 										<% }) %>
@@ -19,45 +19,45 @@
 								</label>
 							</div>
 							<div class="large-3 column">
-								<label for="fromDate">Add seats from date
+								<label for="from">Add seats from date
 									<input id="from" name="fromDate" type="text" required>
 								</label>
 							</div>
 
 							<div class="large-3 column">
 
-								<label for="toDate">to date
+								<label for="to">to date
 									<input id="to" name="toDate" type="text" required>
 								</label>
 							</div>
 							<div class="large-6 column">
 								<label for="no_first">No. First class seats
-									<input name="no_first" type="text" required>
+									<input id= "no_first" name="no_first" type="text" required>
 								</label>
 							</div>
 							<div class="large-6 column">
 								<label for="price_first">Price
-									<input name="price_first" type="text" required>
+									<input id="price_first" name="price_first" type="text" required>
 								</label>
 							</div>
 							<div class="large-6 column">
 								<label for="no_biz">No. Business class seats
-									<input name="no_biz" type="text" required>
+									<input id="no_biz" name="no_biz" type="text" required>
 								</label>
 							</div>
 							<div class="large-6 column">
 								<label for="price_biz">Price
-									<input name="price_biz" type="text" required>
+									<input id ="price_biz" name="price_biz" type="text" required>
 								</label>
 							</div>
 							<div class="large-6 column">
 								<label for="no_econ">No. Economy class seats
-									<input name="no_econ" type="text" required>
+									<input id="no_econ" name="no_econ" type="text" required>
 								</label>
 							</div>
 							<div class="large-6 column">
 								<label for="price_econ">Price
-									<input name="price_econ" type="text" required>
+									<input id="price_econ" name="price_econ" type="text" required>
 								</label>
 							</div>
 
@@ -78,7 +78,7 @@
 						<legend class="transparent-bg">Searching Seats</legend>
 						<form id="searching-seat-form">
 							<div class="large-4 column">
-								<label for="flight">Flight
+								<label for="search_fno">Flight
 									<select name="flight" id="search_fno">
 										<% flights.forEach(function (flight, index) { %>
 										<option value="<%= flight.fno %>"><%= flight.fno +" From "+ flight.origin + " To: " + flight.destination +" Seats:"+flight.seats%></option>
@@ -92,7 +92,7 @@
 								</label>
 							</div>
 							<div class="large-3 column">
-								<label for="fromDate">Avaliable
+								<label for="search_avaliable">Avaliable
 									<select id="search_avaliable">
 										<option value="TRUE">True</option>
 										<option value="FALSE">False</option>

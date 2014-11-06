@@ -7,13 +7,13 @@
 			<form id="add-new-plane-form" data-abide="ajax">
 				<div class="row">
 					<div class="large-12">
-						<label for="aid">Airplane ID
+						<label for="plane-aid">Airplane ID
 							<input type="text" id="plane-aid" name="aid" required pattern="plane_id">
 						</label>
 						<small class="error">Airplane ID format can only be 3 Capital letters followed by 3 digits.</small>
 					</div>
 					<div class="large-12">
-						<label for="type">Airplane Type
+						<label for="plane-type">Airplane Type
 							<select id="plane-type" name="type">
 								<option value="a380">A380</option>
 								<option value="a330">A330</option>
@@ -23,7 +23,7 @@
 						</label>
 					</div>
 					<div class="large-12">
-						<label for="seats">Seats
+						<label for="plane-seats">Seats
 							<input type="text" id="plane-seats" name="seats" required pattern="integer">
 						</label>
 						<small class="error">Seats can only be a valid number.</small>

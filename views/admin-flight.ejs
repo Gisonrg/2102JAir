@@ -6,24 +6,24 @@
 			<form method="post" action="/api/flights" id="add-new-flight-form" data-abide>
 				<div class="row">
 					<div class="large-12">
-						<label for="fno">Flight No.
+						<label for="flight-no">Flight No.
 							<input type="text" id="flight-no" name="fno" required pattern="flight_id">
 						</label>
 						<small class="error">Flight No. format can only "JA" followed by 3 number.</small>
 					</div>
 					<div class="large-12">
-						<label for="depart">Depart Time
+						<label for="flight-depart">Depart Time
 							<input type="text" id="flight-depart" name="depart_time" required>
 						</label>
 					</div>
 					<div class="large-12">
-						<label for="arrive">Arrive Time
+						<label for="flight-arrive">Arrive Time
 							<input type="text" id="flight-arrive" name="arrive_time" required>
 						</label>
 					</div>
 
 					<div class="large-12">
-						<label for="from">From Airport
+						<label for="light-from">From Airport
 							<select id="flight-from" name="from">
 								<% airports.forEach(function (airport, index) { %>
 								<option value="<%= airport.code %>"><%= airport.code +" "+ airport.city %></option>
@@ -32,7 +32,7 @@
 						</label>
 					</div>
 					<div class="large-12">
-						<label for="to">Destination Airport
+						<label for="flight-to">Destination Airport
 							<select id="flight-to" name="to">
 								<% airports.forEach(function (airport, index) { %>
 								<option value="<%= airport.code %>"><%= airport.code +" "+ airport.city %></option>
@@ -42,7 +42,7 @@
 					</div>
 
 					<div class="large-12">
-						<label for="to">Plane
+						<label for="flight-plane">Plane
 							<select id="flight-plane" name="plane">
 								<% planes.forEach(function (plane, index) { %>
 								<option value="<%= plane.aid %>"><%= plane.aid +" "+ plane.type %></option>
