@@ -8,11 +8,15 @@ DROP TABLE IF EXISTS passenger;
 
 CREATE TABLE passenger (
 	pid INTEGER PRIMARY KEY AUTO_INCREMENT,
+	title VARCHAR(128),
 	name VARCHAR(128) NOT NULL,
 	passport VARCHAR(9) NOT NULL,
 	email VARCHAR(256) NOT NULL UNIQUE,
 	password VARCHAR(40),
-	contact VARCHAR(32)
+	contact VARCHAR(32),
+	dateOfBirth DATE,
+	passportExpDate DATE,
+	address VARCHAR(256)
 );
 
 CREATE TABLE administrator (
