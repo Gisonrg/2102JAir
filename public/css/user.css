@@ -1,0 +1,19 @@
+/* fullscreen setup */
+@font-face {
+    font-family: 'Yanone Kaffeesatz';
+    src: url('YanoneKaffeesatz-Regular.ttf');
+}
+
+html, body {
+    background-image: url('../img/grey.png');
+    background-repeat: repeat;
+    /* give this to all tags from html to .fullscreen */
+    height:100%;
+}
+
+
+.box {
+    margin:2% auto; 
+    width:70%; 
+    text-align:center;
+}

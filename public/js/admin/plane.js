@@ -11,7 +11,7 @@ function populateTable() {
 				tableContent += '<h2>Delete plane ' + this.aid + '</h2>';
 				tableContent += '<h4>Are you sure?</h4>';
 				tableContent += '<p><button class="alert" id="delete_' + this.aid + '">Delete</button>';
-				tableContent += '<button>Cancel</button></p>';
+				tableContent += '<button id="cancel_' + this.aid + '">Cancel</button></p>';
 				tableContent += '<a class="close-reveal-modal">&#215;</a></div>';
 				$('#data-entry').append($(tableContent));
 				tableContent = '';
@@ -34,6 +34,7 @@ function populateTable() {
 					modal.foundation('reveal', 'open');
 				});
 				var delete_button = $("#delete_" + this.aid);
+				var cancel_button = $("#cancel_" + this.aid);
 				var plane_id = this.aid;
 				delete_button.on('click', function() {
 					$.ajax({
@@ -51,6 +52,9 @@ function populateTable() {
 							alert('Error: ' + response.error);
 						}
 					});
+				});
+				cancel_button.on('click', function() {
+					modal.foundation('reveal', 'close');
 				});
 			});
 		}

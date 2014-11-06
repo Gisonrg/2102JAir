@@ -1,14 +1,8 @@
 <% include header %>
-<div class="row" style="margin:2% auto; width:70%; text-align:center;">
+<link rel="stylesheet" href="css/user.css">
+<% include common/alert-bar %>
+<div class="row box" >
 	<h2>User Registration</h2>
-	<article>
-	<% if (error) { %>
-	      <div data-alert id="error_alert" class="alert-box alert">
-	        <%= error %>
-	        <a href="#" class="close">&times;</a>
-	      </div>
-      <% } %>
-	</article>
 	<p>
 		<form method="post" action="/register" data-abide>
 			<div class="medium-8 medium-centered columns">

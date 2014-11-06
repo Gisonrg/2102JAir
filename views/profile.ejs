@@ -1,22 +1,8 @@
 <% include header %>
-<div class="row" style="margin:2% auto; width:70%; text-align:center;">
+<link rel="stylesheet" href="css/user.css">
+<% include common/alert-bar %>
+<div class="row box" >
 	<h2>My Profile</h2>
-	<div class="row">
-		<div class="large-8 large-offset-2 columns">
-			<% if (success) { %>
-			<div data-alert id="success_alert" class="alert-box success">
-				<%= success %>
-				<a href="#" class="close">&times;</a>
-			</div>
-			<% } %>
-			<% if (error) { %>
-			<div data-alert id="error_alert" class="alert-box alert">
-				<%= error %>
-				<a href="#" class="close">&times;</a>
-			</div>
-			<% } %>
-		</div>
-	</div>
 	<p>
 		<form method="post" action="/profile" data-abide>
 			<div class="medium-8 medium-centered columns">
@@ -75,9 +61,9 @@
 					</div>
 					<div class="medium-5 columns end">
 						<% if(user.passportExpDate != null) { %>
-						<input type="text"  value="<%=user.passportExpDate%>" onfocus="(this.type='date')" onblur="(this.type='text')" id="passportExpDate" name="passportExpDate" placeholder="Passport Expire Date"/>
+						<input type="text"  value="<%=user.passportExpDate%>" id="passportExpDate" name="passportExpDate" placeholder="Passport Expire Date"/>
 						<%} else {%>
-						<input type="text"  onfocus="(this.type='date')" onblur="(this.type='text')" id="passportExpDate" name="passportExpDate" placeholder="Passport Expire Date"/>
+						<input type="text" id="passportExpDate" name="passportExpDate" placeholder="Passport Expire Date"/>
 						<%}%>					
 					</div>
 				</div>
@@ -86,10 +72,10 @@
 						<label for="dateOfBirth" class="left inline">Date Of Birth</label>
 					</div>
 					<div class="medium-5 columns end">
-						<% if(user.dateOfBirth != null) { %>
-						<input type="text"  value="<%=user.dateOfBirth%>" onfocus="(this.type='date')" onblur="(this.type='text')" id="dateOfBirth" name="dateOfBirth" placeholder="Date of birth on passport"/>
+						<% if(user.dateOfBirth) { %>
+						<input type="text"  value="<%=user.dateOfBirth%>" id="dateOfBirth" name="dateOfBirth" placeholder="Date of birth on passport"/>
 						<%} else {%>
-						<input type="text"  onfocus="(this.type='date')" onblur="(this.type='text')" id="dateOfBirth" name="dateOfBirth" placeholder="Date of birth on passport"/>
+						<input type="text" id="dateOfBirth" name="dateOfBirth" placeholder="Date of birth on passport"/>
 						<%}%>
 					</div>
 				</div>
@@ -98,8 +84,8 @@
 						<label for="address" class="left inline">Address</label>
 					</div>
 					<div class="medium-5 columns end">
-						<% if(user.address != null) { %>
-						<input type="text" address="<%=user.address%>" id="address" name="address" placeholder="Enter your address">
+						<% if(user.address) { %>
+						<input type="text" value="<%=user.address%>" id="address" name="address" placeholder="Enter your address">
 						<%} else {%>
 							<input type="text" id="address" name="address" placeholder="Enter your address">
 						<%}%>
@@ -112,4 +98,5 @@
 		</form>
 	</p>
 </div>
+<script type="text/javascript" src="js/index/profile.js"></script>
 <% include footer %>

@@ -13,29 +13,29 @@ function convertDateString(date) {
 
 
 $(document).ready(function() {
-  jQuery('#from').datetimepicker({
-    minDate:0,
-  format:'Y/m/d',
-  onShow:function( ct ){
-   this.setOptions({
-    maxDate:jQuery('#to').val()?jQuery('#to').val():false
-   })
-  },
-  timepicker:false
- });
- jQuery('#to').datetimepicker({
-  format:'Y/m/d',
-  onShow:function( ct ){
-   this.setOptions({
-    minDate:jQuery('#from').val()?jQuery('#from').val():0
-   })
-  },
-  timepicker:false
- });
-  jQuery('#search_date').datetimepicker({
-  format:'Y/m/d',
-  timepicker:false
- });
+    jQuery('#from').datetimepicker({
+      minDate: 0,
+      format: 'Y/m/d',
+      onShow: function(ct) {
+        this.setOptions({
+          maxDate: jQuery('#to').val() ? jQuery('#to').val() : false
+        })
+      },
+      timepicker: false
+    });
+    jQuery('#to').datetimepicker({
+      format: 'Y/m/d',
+      onShow: function(ct) {
+        this.setOptions({
+          minDate: jQuery('#from').val() ? jQuery('#from').val() : 0
+        })
+      },
+      timepicker: false
+    });
+    jQuery('#search_date').datetimepicker({
+      format: 'Y/m/d',
+      timepicker: false
+    });
 
 
   $("#seat_submit").on("click", function(event){
@@ -57,7 +57,7 @@ $(document).ready(function() {
           tableContent = '';
         } else {
           $.each(data, function(index, element) {
-            console.log(index);
+            console.log
             tableContent += '<tr><td style="text-align:center;">';
             tableContent += this.flight_no;
             tableContent += '</td><td style="text-align:center;">';

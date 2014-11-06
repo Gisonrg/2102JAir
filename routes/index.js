@@ -164,32 +164,34 @@ router.post('/register', function(req, res) {
   });
 });
 
-
 /* GET profile page. */
 router.get('/profile', checkLogin);
 router.get('/profile', function(req, res) {
-  res.render('profile', { 
-    title: 'J-Air | My Profile',
-    user : req.session.user,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
+  User.get(req.session.user.email, function(err, user) {
+    var user = user[0];
+    res.render('profile', { 
+        title: 'J-Air | My Profile',
+        user : user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString()
+    });
   });
 });
 
 
 /* POST user update information. */
+router.post('/profile', checkLogin);
 router.post('/profile', function(req, res) {
   var title = req.body.title,
   name = req.body.name,
   contact = req.body.contact,
   passport = req.body.passport,
-  passportExpDate =req.body.passportExpDate,
+  passportExpDate = req.body.passportExpDate,
   dateOfBirth = req.body.dateOfBirth,
   address = req.body.address,
   email = req.session.user.email;
 
   User.update(email, title, name, contact, passport, passportExpDate, dateOfBirth, address, function (err, user){
-
     if (err) {
       req.flash('error', err);
       return res.redirect('/profile');
@@ -198,7 +200,6 @@ router.post('/profile', function(req, res) {
       res.redirect('/profile');
     }
   });
-
 });
 
 

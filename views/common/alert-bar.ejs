@@ -1,0 +1,16 @@
+<div class="row">
+    <div class="large-8 large-offset-2 columns">
+      <% if (success) { %>
+      <div data-alert id="success_alert" class="alert-box success" >
+        <%= success %>
+        <a href="#" class="close">&times;</a>
+      </div>
+      <% } %>
+      <% if (error) { %>
+      <div data-alert id="error_alert" class="alert-box alert">
+        <%= error %>
+        <a href="#" class="close">&times;</a>
+      </div>
+      <% } %>
+    </div>
+</div>

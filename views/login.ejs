@@ -1,15 +1,13 @@
 <% include header %>
-<div class="row" style="margin:2% auto; width:70%; text-align:center;">
+<link rel="stylesheet" href="css/user.css">
+<% include common/alert-bar %>
+<div class="row box">
 	<h2>Passenger Login</h2>
 	<article>
 		<% if (success) { %>
 		<div style = "color: green"><%= success %></div>
-		<% } %>
-		<% if (error == 'Wrong Password' || error == "Please complete the login information") { %>
-		<div style = "color: red"><%= error %> </div>
 		<% } if(error == 'Wrong Email'){ %>
 		<div>New User? Click <a href="/register">here</a> to register.</div>
-		<div style = "color: red"><%= error %> </div>
 		<% } %>
 	</article>
 	<p>

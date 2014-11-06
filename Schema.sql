@@ -11,11 +11,11 @@ CREATE TABLE passenger (
 	title VARCHAR(128),
 	name VARCHAR(128) NOT NULL,
 	passport VARCHAR(9) NOT NULL,
-	email VARCHAR(256) NOT NULL UNIQUE,
+	email VARCHAR(128) NOT NULL UNIQUE,
 	password VARCHAR(40),
 	contact VARCHAR(32),
-	dateOfBirth DATE,
-	passportExpDate DATE,
+	dateOfBirth VARCHAR(40),
+	passportExpDate VARCHAR(40),
 	address VARCHAR(256)
 );
 

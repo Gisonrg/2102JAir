@@ -123,7 +123,7 @@ router.get('/user', function(req, res) {
   });
 });
 
-router.get('/flight', checkLogin);
+// router.get('/flight', checkLogin);
 router.get('/flight', function(req, res) {
   Airport.getAll(function(err, airports) {
     Plane.getAvaliable(function(err, planes) {
