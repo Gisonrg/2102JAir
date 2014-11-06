@@ -8,6 +8,8 @@ html, body {
     overflow:hidden;
     /* give this to all tags from html to .fullscreen */
     height:100%;
+    background-image: url('../img/grey.png');
+    background-repeat: repeat;
 }
 
 /* background setup */
@@ -61,4 +63,9 @@ html, body {
         /* give this to all tags from html to .fullscreen */
         height:100%;
     }
+}
+
+.bg {
+    background-image: url('../img/grey.png');
+    background-repeat: repeat;
 }
