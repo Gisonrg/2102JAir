@@ -6,40 +6,34 @@
 		<div class="content-b">
 			<div class="large-8 large-centered column">
 				<p class="home-big-word">Hi, where is your next destination?</p>
-				<form>
+				<form id="searching-seat-form" method="post" action="/search">
 					<div class="row">
 						<div class="small-4 columns">
 							<label  style="color:white;">From
-								<input type="text" id="search_from" placeholder="From..." />
+								<input type="text" id="from" name="from" placeholder="From..." />
 							</label>
 						</div>
 						<div class="small-4 columns">
 							<label  style="color:white;">To
-								<input type="text" id="search_to" placeholder="Destination..." />
+								<input type="text" id="search_to" name="to"placeholder="Destination..." />
 							</label>
 						</div>
 						<div class="small-4 columns">
 
 							<label style="color:white;">Passenger(s)
-								<select  id="search_passenger">
-									<option value="1">1</option>
-									<option value="2">2</option>
-									<option value="3">3</option>
-									<option value="4">4</option>
-									<option value="5">5+</option>
-								</select>
+								<input type="text" id="search_passenger" name="passenger" value="1" placeholder="Number of passengers..." />
 							</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="large-6 columns">
-							<label  style="color:white;">Depart
-								<input type="text"  onfocus="(this.type='date')" onblur="(this.type='text')" id="return_date" placeholder="Depart" />
+							<label  style="color:white;" >Depart
+								<input type="text" id="depart_date" name="depart_date" placeholder="Depart" />
 							</label>
 						</div>
 						<div class="large-6 columns">
 							<label  style="color:white;">Return
-								<input type="text"  onfocus="(this.type='date')" onblur="(this.type='text')" id="return_date" placeholder="Return" />
+								<input type="text"  id="return_date" name="return_date" placeholder="Return" />
 							</label>
 						</div>
 					</div>
@@ -51,15 +45,15 @@
 						</div>
 						<div class="small-5 columns">
 							<label style="color:white;">Class
-								<select id="search_class">
-									<option value="1">Economy</option>
-									<option value="2">Business</option>
-									<option value="3">Suite</option>
+								<select id="search_class" name="seat_class">
+									<option value="Economy" selected="selected">Economy</option>
+									<option value="Business">Business</option>
+									<option value="Suite">Suite</option>
 								</select>
 							</label>
 						</div>
 					</div>
-					<a href="#" class="button secondary">Find my flight</a>
+					<input id="seat_submit" value="Find" type="submit" />
 				</form>
 			</div>
 		</div>

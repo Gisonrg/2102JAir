@@ -1,7 +1,37 @@
 <% include header %>
+<link rel="stylesheet" href="css/user.css">
 <div class="row" style="margin:2% auto; width:70%; text-align:center;">
 	<h2>Select Flights</h2>
 	<p>
+		<div class="small-13 large-centered columns">
+		<form action='/selectFlights' method="post">
+		<table>
+			<thead>
+				<tr>
+					<th width="6%">&nbsp;&nbsp;</th>
+					<th width="16.7%">Flight No.</th>
+					<th width="25.2%">Depart Time-Arrive Time</th>
+					<th width="20.7%">Origin-Destination</th>
+					<th width="20.7%">Price/Passenger</th>
+					<th width="16.7%">Total Price</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% for(var i=0; i<flight.length; i++) { %>
+				<tr>
+					<td><input type="radio" value="<%=flight[i].fno%>" /></td>
+					<td><%=flight[i].fno%></td>
+					<td><%=flight[i].depart_time+"-"+flight[i].arrive_time%></td>
+					<td><%=flight[i].origin+"-"+flight[i].destination%></td>
+					<td><%=flight[i].price%></td>
+					<td><%=flight[i].price*flight[i].passengers%></td>
+				</tr>
+				<% } %>
+			</tbody>
+		</table>
+		<input type="submit" value="Next" />
+		</form>
+		</div>
 	</p>
 </div>
 <% include footer %>

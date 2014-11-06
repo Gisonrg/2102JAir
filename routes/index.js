@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../model/user.js');
+var Seat = require('../model/seat.js');
 var crypto = require('crypto');
 
 /* GET home page. */
@@ -8,6 +9,7 @@ router.get('/', function(req, res) {
   res.render('home', { 
   	title: 'J-Air | Home',
   	user : req.session.user,
+    flight : req.session.flight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -18,6 +20,7 @@ router.get('/search', function(req, res) {
   res.render('search', { 
   	title: 'J-Air | Search',
   	user : req.session.user,
+    flight : req.session.flight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -29,17 +32,18 @@ router.get('/booking', function(req, res) {
   res.render('booking', { 
     title: 'J-Air | My Bookings',
     user : req.session.user,
+    flight : req.session.flight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
 });
 
 /* GET selectFlights page. */
-router.get('/selectFlights', checkLogin);
 router.get('/selectFlights', function(req, res) {
   res.render('selectFlights', { 
     title: 'J-Air | Select Flights',
     user : req.session.user,
+    flight : req.session.flight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -51,6 +55,7 @@ router.get('/passengers', function(req, res) {
   res.render('passengers', { 
     title: 'J-Air | Passenger information',
     user : req.session.user,
+    flight : req.session.flight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -62,6 +67,7 @@ router.get('/selectSeats', function(req, res) {
   res.render('selectSeats', { 
     title: 'J-Air | Seat Selection',
     user : req.session.user,
+    flight : req.session.flight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -73,6 +79,7 @@ router.get('/checkOut', function(req, res) {
   res.render('checkOut', { 
     title: 'J-Air | Check Out',
     user : req.session.user,
+    flight : req.session.flight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -81,9 +88,10 @@ router.get('/checkOut', function(req, res) {
 /* GET login page. */
 router.get('/login', checkNotLogin);
 router.get('/login', function(req, res) {
-  res.render('login', { 
+  res.render('login', {
     title: 'J-Air | Login',
     user : req.session.user,
+    flight : req.session.flight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -93,7 +101,7 @@ router.get('/login', function(req, res) {
 router.post('/login', checkNotLogin);
 router.post('/login', function(req, res){
   var email = req.body.email,
-  password = req.body.password; 
+  password = req.body.password;
   if(email == "" || password == ""){ // incomplete information
     req.flash('error', 'Please complete the login information');
     res.redirect('/login');
@@ -128,8 +136,10 @@ router.get('/logout', function (req, res) {
 
 /* GET register page. */
 router.get('/register', function(req, res) {
-  res.render('register', { title: 'J-Air | Register',
+  res.render('register', {
+    title: 'J-Air | Register',
     user : req.session.user,
+    flight : req.session.flight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -169,9 +179,10 @@ router.get('/profile', checkLogin);
 router.get('/profile', function(req, res) {
   User.get(req.session.user.email, function(err, user) {
     var user = user[0];
-    res.render('profile', { 
+    res.render('profile', {
         title: 'J-Air | My Profile',
         user : user,
+        flight : req.session.flight,
         success: req.flash('success').toString(),
         error: req.flash('error').toString()
     });
@@ -200,6 +211,40 @@ router.post('/profile', function(req, res) {
       res.redirect('/profile');
     }
   });
+});
+
+/* POST search information. */
+router.post('/search', function(req, res) {
+  var from = req.body.from,
+  to = req.body.to,
+  passenger = parseInt(req.body.passenger),
+  depart_date = req.body.depart_date,
+  return_date = req.body.return_date,
+  trip_type = req.body.trip_type,
+  seat_class = req.body.seat_class;
+
+  var search_query = {
+    'seat.seat_class' : seat_class,
+    'seat.flight_time' : depart_date,
+    'flight.origin' : from,
+    'flight.destination' : to
+  };
+  Seat.searchFlight(passenger, search_query, function(error, result) {
+    if(result==null) {
+      res.redirect('/search');
+    } else {
+      var flight_list = result;
+      req.session.flight = flight_list;
+      res.redirect('/selectFlights');
+    }
+
+  });
+
+  if (trip_type=="Single") {
+
+  } else {
+
+  }
 });
 
 

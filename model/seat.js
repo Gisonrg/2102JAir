@@ -74,11 +74,39 @@ Seat.search = function(condition, callback) {
       for (var i in rows) {
         output.push(rows[i]);
       }
+      console.log(output);
       callback(null, output);
       connection.release();
     });
   });
 };
+
+Seat.searchFlight = function(totalPeople, condition, callback) {
+  var query = 'SELECT DISTINCT fno, depart_time, arrive_time, origin, destination, DATE_FORMAT(flight_time, "%Y/%m/%d") as flight_time, price from seat, flight where seat.flight_no=flight.fno AND '+prepareQuery(condition);
+  query += " AND " + totalPeople +" <(SELECT COUNT(*) from seat, flight where seat.flight_no=flight.fno AND seat.available=\'TRUE\' AND "+prepareQuery(condition) + ")";
+  console.log(query);
+  pool.getConnection(function(err, connection) {
+    // Use the connection
+    connection.query(query, function(err, rows, fields) {
+      if (err) {
+        console.log(err);
+        return callback(err.code, null);
+      }
+      var output = [];
+      for (var i in rows) {
+        rows[i].passengers=totalPeople;
+        output.push(rows[i]);
+      }
+      console.log(output);
+      callback(null, output);
+      connection.release();
+    });
+  });
+};
+
+Seat.getAvailable = function(condition, callback) {
+  var query = 'SELECT COUNT(*) FROM seat, flight where seat.flight_no=flight.fno AND seat.';
+}
 
 Seat.remove = function(sid, callback) {
   pool.getConnection(function(err, connection) {
