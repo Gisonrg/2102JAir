@@ -56,6 +56,50 @@ router.get('/booking', function(req, res) {
   });
 });
 
+/* GET selectFlights page. */
+router.get('/selectFlights', checkLogin);
+router.get('/selectFlights', function(req, res) {
+  res.render('selectFlights', { 
+    title: 'J-Air | Select Flights',
+    user : req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
+  });
+});
+
+/* GET passengers page. */
+router.get('/passengers', checkLogin);
+router.get('/passengers', function(req, res) {
+  res.render('passengers', { 
+    title: 'J-Air | Passenger information',
+    user : req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
+  });
+});
+
+/* GET selectSeats page. */
+router.get('/selectSeats', checkLogin);
+router.get('/selectSeats', function(req, res) {
+  res.render('selectSeats', { 
+    title: 'J-Air | Seat Selection',
+    user : req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
+  });
+});
+
+/* GET checkOut page. */
+router.get('/checkOut', checkLogin);
+router.get('/checkOut', function(req, res) {
+  res.render('checkOut', { 
+    title: 'J-Air | Check Out',
+    user : req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
+  });
+});
+
 /* POST User login request */
 router.post('/login', checkNotLogin);
 router.post('/login', function(req, res){
