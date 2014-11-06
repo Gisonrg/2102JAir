@@ -28,26 +28,20 @@ User.getAll = function(callback) {
 };
 
 User.get = function(email, callback) {
-	pool.getConnection(function(err, connection) {
-    // Use the connection
-    connection.query('SELECT * from passenger where ?', {
-      "email": email
-    }, function(err, rows, fields) {
-      if (err) {
-        return callback(err.code, null);
-      }
-
-      // var output = rows[0];
-      // console.log("user.js: User found: " + rows);
-      callback(null, rows);
-
-      connection.release();
-    });
-  });
+		pool.getConnection(function(err, connection) {
+	    connection.query('SELECT * from passenger where ?', {
+	    	"email": email
+	    }, function(err, rows, fields) {
+	    	if (err) {
+	    		return callback(err.code, null);
+	    	}
+	    	callback(null, rows);
+	    	connection.release();
+	    });
+	});
 };
 
 User.prototype.add = function(callback) {
-	console.log(this.name);
 	var user = {
 		name : this.name,
 		passport : this.passport,
@@ -55,14 +49,12 @@ User.prototype.add = function(callback) {
 		password : this.password,
 		contact : this.contact
 	};
-
 	pool.getConnection(function(err, connection) {
 		connection.query('INSERT INTO passenger SET ?', user, function(err, rows, fields) {
 			if (err) {
 				console.log(err);
 				return callback(err.code, null);
 			}
-
 			var output = [];
 			for (var i in rows) {
 				output.push(rows[i]);
@@ -73,7 +65,6 @@ User.prototype.add = function(callback) {
 			connection.release();
 		});
 	});
-
 };
 
 module.exports = User;

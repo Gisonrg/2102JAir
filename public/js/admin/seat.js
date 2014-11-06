@@ -47,7 +47,7 @@ $(document).ready(function() {
     var condition = {
       "flight_no" : fno,
       "flight_time" : date,
-      "avaliable" : avaliablity
+      "available" : avaliablity
     };
     $.getJSON("/api/seats", condition, function(data) {
       var tableContent = "";
@@ -67,7 +67,7 @@ $(document).ready(function() {
             tableContent += '</td><td style="text-align:center;">';
             tableContent += this.sid;
             tableContent += '</td><td style="text-align:center;">';
-            tableContent += this.avaliable;
+            tableContent += this.available;
             tableContent += '</td><td style="text-align:center;">';
             tableContent += this.price;
             tableContent += '</td><td style="text-align:center;">';

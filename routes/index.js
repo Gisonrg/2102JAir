@@ -23,16 +23,6 @@ router.get('/search', function(req, res) {
   });
 });
 
-/* GET login page. */
-router.get('/login', checkNotLogin);
-router.get('/login', function(req, res) {
-  res.render('login', { 
-  	title: 'J-Air | Login',
-  	user : req.session.user,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
-  });
-});
 
 /* GET profile page. */
 router.get('/profile', checkLogin);
@@ -100,6 +90,17 @@ router.get('/checkOut', function(req, res) {
   });
 });
 
+/* GET login page. */
+router.get('/login', checkNotLogin);
+router.get('/login', function(req, res) {
+  res.render('login', { 
+    title: 'J-Air | Login',
+    user : req.session.user,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
+  });
+});
+
 /* POST User login request */
 router.post('/login', checkNotLogin);
 router.post('/login', function(req, res){
@@ -107,7 +108,7 @@ router.post('/login', function(req, res){
   password = req.body.password; 
   if(email == "" || password == ""){ // incomplete information
     req.flash('error', 'Please complete the login information');
-    return res.redirect('/login');
+    res.redirect('/login');
   } else{
     var md5 = crypto.createHash('md5');
     password = md5.update(password).digest('hex');
@@ -115,18 +116,17 @@ router.post('/login', function(req, res){
 
     if(user.length!=0){ // user found
       user = user[0];
-      console.log(user.password +" "+password);
       if(user.password != password){ // wrong password
         req.flash('error', 'Wrong Password');
-        return res.redirect('/login');
+        res.redirect('/login');
       } else{ // login successfully
         req.session.user = user;
         req.flash('success','Login Successfully');
-        return res.redirect('/');
+        res.redirect('/');
       }
     }else{ // no such user
       req.flash('error', 'Wrong Email');
-      return res.redirect('/login');
+      res.redirect('/login');
     }
   })
   }

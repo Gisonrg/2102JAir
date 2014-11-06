@@ -110,7 +110,7 @@ router.get('/plane', function(req, res) {
   });
 });
 
-router.get('/user', checkLogin);
+// router.get('/user', checkLogin);
 router.get('/user', function(req, res) {
   User.getAll(function(err, users) {
     res.render('admin-user', {
@@ -142,7 +142,7 @@ router.get('/flight', function(req, res) {
   });
 });
 
-router.get('/seat', checkLogin);
+// router.get('/seat', checkLogin);
 router.get('/seat', function(req, res) {
   Flight.getAll(function(err, flights) {
     res.render('admin-seat', {
