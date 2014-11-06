@@ -4,33 +4,69 @@
 	<h2>Select Flights</h2>
 	<p>
 		<div class="small-13 large-centered columns">
-		<form action='/selectFlights' method="post">
-		<table>
-			<thead>
-				<tr>
-					<th width="6%">&nbsp;&nbsp;</th>
-					<th width="16.7%">Flight No.</th>
-					<th width="25.2%">Depart Time-Arrive Time</th>
-					<th width="20.7%">Origin-Destination</th>
-					<th width="20.7%">Price/Passenger</th>
-					<th width="16.7%">Total Price</th>
-				</tr>
-			</thead>
-			<tbody>
-				<% for(var i=0; i<flight.length; i++) { %>
-				<tr>
-					<td><input type="radio" value="<%=flight[i].fno%>" /></td>
-					<td><%=flight[i].fno%></td>
-					<td><%=flight[i].depart_time+"-"+flight[i].arrive_time%></td>
-					<td><%=flight[i].origin+"-"+flight[i].destination%></td>
-					<td><%=flight[i].price%></td>
-					<td><%=flight[i].price*flight[i].passengers%></td>
-				</tr>
+			<form action='/selectFlights' method="post">
+				<%if (flight != null && flight != ''){%>
+				<p class="text-left"><strong>Please choose your flight on: <%=flight[0].flight_time%></strong></p>
+				<table>
+					<thead>
+						<tr>
+							<th width="6%">&nbsp;&nbsp;</th>
+							<th width="16.7%">Flight No.</th>
+							<th width="25.2%">Depart Time-Arrive Time</th>
+							<th width="20.7%">Origin-Destination</th>
+							<th width="20.7%">Price/Passenger</th>
+							<th width="16.7%">Total Price</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% for(var i=0; i<flight.length; i++) { %>
+						<tr>
+							<td><input type="radio" value="<%=flight[i].fno%>" /></td>
+							<td><%=flight[i].fno%></td>
+							<td><%=flight[i].depart_time+"-"+flight[i].arrive_time%></td>
+							<td><%=flight[i].origin+"-"+flight[i].destination%></td>
+							<td><%=flight[i].price%></td>
+							<td><%=flight[i].price*flight[i].passengers%></td>
+						</tr>
+						<% } %>
+					</tbody>
+				</table>
+				<br>
+				<%}%> 
+				<%if (returnFlight != null && returnFlight != ''){%>
+				<%if (flight == null || flight == ''){%>
+				<p style = "color: #E74C3C">Result only found for return flight!</p>
+				<%}%>
+				<p class="text-left"><strong>Please choose your return flight on: <%=returnFlight[0].flight_time%></strong></p>
+				<table>
+					<thead>
+						<tr>
+							<th width="6%">&nbsp;&nbsp;</th>
+							<th width="16.7%">Flight No.</th>
+							<th width="25.2%">Depart Time-Arrive Time</th>
+							<th width="20.7%">Origin-Destination</th>
+							<th width="20.7%">Price/Passenger</th>
+							<th width="16.7%">Total Price</th>
+						</tr>
+					</thead>
+					<tbody>
+						<% for(var i=0; i<returnFlight.length; i++) { %>
+						<tr>
+							<td><input type="radio" value="<%=returnFlight[i].fno%>" /></td>
+							<td><%=returnFlight[i].fno%></td>
+							<td><%=returnFlight[i].depart_time+"-"+returnFlight[i].arrive_time%></td>
+							<td><%=returnFlight[i].origin+"-"+returnFlight[i].destination%></td>
+							<td><%=returnFlight[i].price%></td>
+							<td><%=returnFlight[i].price*returnFlight[i].passengers%></td>
+						</tr>
+						<% } %>
+					</tbody>
+				</table>
+				<input class = "button" type="submit" value="Next" />
+				<%} else { %>
+				<p style = "color: #E74C3C">No result found!</p>
 				<% } %>
-			</tbody>
-		</table>
-		<input type="submit" value="Next" />
-		</form>
+			</form>
 		</div>
 	</p>
 </div>

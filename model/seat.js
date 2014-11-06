@@ -13,7 +13,7 @@ Seat.get = function(sid, callback) {
   pool.getConnection(function(err, connection) {
     console.log(fno);
     // Use the connection
-    connection.query('SELECT * from seat where ? ', sid,function(err, rows, fields) {
+    connection.query('SELECT * FROM seat WHERE ? ', sid,function(err, rows, fields) {
       if (err) {
         return callback(err.code, null);
       }
@@ -54,7 +54,7 @@ function prepareQuery(condition) {
   for (var entry in condition) {
     query+=entry+" = '"+condition[entry]+"'";
     if ((count+1)<length) {
-      query+=" and ";
+      query+=" AND ";
     }
     count++;
   }
@@ -62,7 +62,7 @@ function prepareQuery(condition) {
 }
 
 Seat.search = function(condition, callback) {
-  var query = 'SELECT sid, flight_no, DATE_FORMAT(flight_time, "%Y/%m/%d") as flight_time, seat_class, available, price from seat where '+prepareQuery(condition);
+  var query = 'SELECT sid, flight_no, DATE_FORMAT(flight_time, "%Y/%m/%d") AS flight_time, seat_class, available, price FROM seat WHERE '+prepareQuery(condition);
   query+=" ORDER BY sid"
   pool.getConnection(function(err, connection) {
     // Use the connection
@@ -82,8 +82,12 @@ Seat.search = function(condition, callback) {
 };
 
 Seat.searchFlight = function(totalPeople, condition, callback) {
-  var query = 'SELECT DISTINCT fno, depart_time, arrive_time, origin, destination, DATE_FORMAT(flight_time, "%Y/%m/%d") as flight_time, price from seat, flight where seat.flight_no=flight.fno AND '+prepareQuery(condition);
-  query += " AND " + totalPeople +" <(SELECT COUNT(*) from seat, flight where seat.flight_no=flight.fno AND seat.available=\'TRUE\' AND "+prepareQuery(condition) + ")";
+  var query = 'SELECT DISTINCT fno, depart_time, arrive_time, origin, destination, DATE_FORMAT(flight_time, "%Y/%m/%d") AS flight_time, price 
+               FROM seat, flight 
+               WHERE seat.flight_no=flight.fno AND '+prepareQuery(condition);
+  query += " AND " + totalPeople +" < (SELECT COUNT(*) 
+                                       FROM seat, flight 
+                                       WHERE seat.flight_no=flight.fno AND seat.available=\'TRUE\' AND "+prepareQuery(condition) + ")";
   console.log(query);
   pool.getConnection(function(err, connection) {
     // Use the connection
@@ -105,13 +109,13 @@ Seat.searchFlight = function(totalPeople, condition, callback) {
 };
 
 Seat.getAvailable = function(condition, callback) {
-  var query = 'SELECT COUNT(*) FROM seat, flight where seat.flight_no=flight.fno AND seat.';
+  var query = 'SELECT COUNT(*) FROM seat, flight WHERE seat.flight_no=flight.fno AND seat.';
 }
 
 Seat.remove = function(sid, callback) {
   pool.getConnection(function(err, connection) {
     // Use the connection
-    connection.query('DELETE from seat where ?', sid, function(err,
+    connection.query('DELETE FROM seat WHERE ?', sid, function(err,
       rows, fields) {
       if (err) {
         console.log(err);

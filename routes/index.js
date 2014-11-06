@@ -10,6 +10,7 @@ router.get('/', function(req, res) {
   	title: 'J-Air | Home',
   	user : req.session.user,
     flight : req.session.flight,
+    returnFlight : req.session.returnFlight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -21,6 +22,7 @@ router.get('/search', function(req, res) {
   	title: 'J-Air | Search',
   	user : req.session.user,
     flight : req.session.flight,
+    returnFlight : req.session.returnFlight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -33,6 +35,7 @@ router.get('/booking', function(req, res) {
     title: 'J-Air | My Bookings',
     user : req.session.user,
     flight : req.session.flight,
+    returnFlight : req.session.returnFlight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -44,6 +47,7 @@ router.get('/selectFlights', function(req, res) {
     title: 'J-Air | Select Flights',
     user : req.session.user,
     flight : req.session.flight,
+    returnFlight : req.session.returnFlight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -56,6 +60,7 @@ router.get('/passengers', function(req, res) {
     title: 'J-Air | Passenger information',
     user : req.session.user,
     flight : req.session.flight,
+    returnFlight : req.session.returnFlight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -68,6 +73,7 @@ router.get('/selectSeats', function(req, res) {
     title: 'J-Air | Seat Selection',
     user : req.session.user,
     flight : req.session.flight,
+    returnFlight : req.session.returnFlight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -80,6 +86,7 @@ router.get('/checkOut', function(req, res) {
     title: 'J-Air | Check Out',
     user : req.session.user,
     flight : req.session.flight,
+    returnFlight : req.session.returnFlight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -92,6 +99,7 @@ router.get('/login', function(req, res) {
     title: 'J-Air | Login',
     user : req.session.user,
     flight : req.session.flight,
+    returnFlight : req.session.returnFlight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -140,6 +148,7 @@ router.get('/register', function(req, res) {
     title: 'J-Air | Register',
     user : req.session.user,
     flight : req.session.flight,
+    returnFlight : req.session.returnFlight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -180,11 +189,12 @@ router.get('/profile', function(req, res) {
   User.get(req.session.user.email, function(err, user) {
     var user = user[0];
     res.render('profile', {
-        title: 'J-Air | My Profile',
-        user : user,
-        flight : req.session.flight,
-        success: req.flash('success').toString(),
-        error: req.flash('error').toString()
+      title: 'J-Air | My Profile',
+      user : user,
+      flight : req.session.flight,
+      returnFlight : req.session.returnFlight,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString()
     });
   });
 });
@@ -215,6 +225,9 @@ router.post('/profile', function(req, res) {
 
 /* POST search information. */
 router.post('/search', function(req, res) {
+  req.session.flight = null;
+  req.session.returnFlight = null;
+  
   var from = req.body.from,
   to = req.body.to,
   passenger = parseInt(req.body.passenger),
@@ -223,28 +236,57 @@ router.post('/search', function(req, res) {
   trip_type = req.body.trip_type,
   seat_class = req.body.seat_class;
 
-  var search_query = {
-    'seat.seat_class' : seat_class,
-    'seat.flight_time' : depart_date,
-    'flight.origin' : from,
-    'flight.destination' : to
-  };
-  Seat.searchFlight(passenger, search_query, function(error, result) {
-    if(result==null) {
-      res.redirect('/search');
-    } else {
-      var flight_list = result;
-      req.session.flight = flight_list;
-      res.redirect('/selectFlights');
-    }
+  if (trip_type=="Single"){ 
+    var single_query = {
+      'seat.seat_class' : seat_class,
+      'seat.flight_time' : depart_date,
+      'flight.origin' : from,
+      'flight.destination' : to
+    };
 
-  });
-
-  if (trip_type=="Single") {
-
+    Seat.searchFlight(passenger, single_query, function(error, result) {
+      if(result==null) {
+        res.redirect('/search');
+      } else {
+        var flight_list = result;
+        req.session.flight = flight_list;
+        res.redirect('/selectFlights');
+      }
+    });
   } else {
+    var single_query = {
+      'seat.seat_class' : seat_class,
+      'seat.flight_time' : depart_date,
+      'flight.origin' : from,
+      'flight.destination' : to
+    };
 
-  }
+    var return_query = {
+      'seat.seat_class' : seat_class,
+      'seat.flight_time' : return_date,
+      'flight.origin' : to,
+      'flight.destination' : from
+    };
+
+    Seat.searchFlight(passenger, single_query, function(error, result) {
+      if(result==null) {
+        res.redirect('/search');
+      } else {
+        var flight_list = result;
+        req.session.flight = flight_list;
+      }
+    });
+
+    Seat.searchFlight(passenger, return_query, function(error, result) {
+      if(result==null) {
+        res.redirect('/search');
+      } else {
+        var flight_list = result;
+        req.session.returnFlight = flight_list;
+        res.redirect('/selectFlights');
+      }
+    });
+  } 
 });
 
 
