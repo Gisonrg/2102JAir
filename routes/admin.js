@@ -9,6 +9,8 @@ var passport = require('passport'),
 var Airport = require('../model/airport.js');
 var Plane = require('../model/plane.js');
 var Flight = require('../model/flight.js');
+var Seat = require('../model/seat.js');
+var Booking = require('../model/booking.js');
 // set up passport strategy
 passport.serializeUser(function(user, done) {
   done(null, user.username);
@@ -110,7 +112,7 @@ router.get('/plane', function(req, res) {
   });
 });
 
-// router.get('/user', checkLogin);
+router.get('/user', checkLogin);
 router.get('/user', function(req, res) {
   User.getAll(function(err, users) {
     res.render('admin-user', {
@@ -123,7 +125,7 @@ router.get('/user', function(req, res) {
   });
 });
 
-// router.get('/flight', checkLogin);
+router.get('/flight', checkLogin);
 router.get('/flight', function(req, res) {
   Airport.getAll(function(err, airports) {
     Plane.getAvaliable(function(err, planes) {
@@ -145,7 +147,7 @@ router.get('/flight', function(req, res) {
   });
 });
 
-// router.get('/seat', checkLogin);
+router.get('/seat', checkLogin);
 router.get('/seat', function(req, res) {
   Flight.getAll(function(err, flights) {
     res.render('admin-seat', {
@@ -161,14 +163,16 @@ router.get('/seat', function(req, res) {
 
 router.get('/booking', checkLogin);
 router.get('/booking', function(req, res) {
-  res.render('admin-booking', {
-    title: 'J-Air Admin | Manage Booking',
-    username: req.session.passport.user,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
+  Booking.getAll(function(err, bookings) {
+    res.render('admin-booking', {
+      title: 'J-Air Admin | Manage Booking',
+      username: req.session.passport.user,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString(),
+      bookings: bookings
+    });
   });
 });
-
 
 function checkLogin(req, res, next) {
   if (!req.session.passport.user) {
