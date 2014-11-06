@@ -52,7 +52,7 @@
 					<tbody>
 						<% for(var i=0; i<returnFlight.length; i++) { %>
 						<tr>
-							<td><input type="radio" value="<%=returnFlight[i].fno%>" /></td>
+							<td><input type="radio" value="<%=returnFlight[i].fno%>" checked="checked"/></td>
 							<td><%=returnFlight[i].fno%></td>
 							<td><%=returnFlight[i].depart_time+"-"+returnFlight[i].arrive_time%></td>
 							<td><%=returnFlight[i].origin+"-"+returnFlight[i].destination%></td>
