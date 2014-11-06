@@ -127,15 +127,18 @@ router.get('/user', function(req, res) {
 router.get('/flight', function(req, res) {
   Airport.getAll(function(err, airports) {
     Plane.getAvaliable(function(err, planes) {
-      Flight.getAll(function(err, flights) {
-        res.render('admin-flight', {
-          title: 'J-Air Admin | Manage Flight',
-          username: req.session.passport.user,
-          success: req.flash('success').toString(),
-          error: req.flash('error').toString(),
-          airports: airports,
-          planes: planes,
-          flights: flights
+      Plane.getAll(function(err, allPlanes) {
+        Flight.getAll(function(err, flights) {
+          res.render('admin-flight', {
+            title: 'J-Air Admin | Manage Flight',
+            username: req.session.passport.user,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString(),
+            airports: airports,
+            planes: planes,
+            allPlanes:allPlanes,
+            flights: flights
+          })
         })
       })
     })

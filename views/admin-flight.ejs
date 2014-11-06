@@ -1,5 +1,15 @@
 <% include admin-header %>
 <div class="row">
+	<div id="deleteForm" class="reveal-modal tiny" data-reveal>
+		<h2>Are you sure?</h2>
+		<p>Delete flight <span id="delete-fno" style="color:red"></span></p>
+		<div class="small-12 small-centered" style="text-align:center">
+			<button id="delete-submit" class="alert"style="outline:none;width:30%;">Delete</button>
+
+			<button id="delete-cancel" style="outline:none;width:30%;">Cancel</button>
+		</div>
+		<a class="close-reveal-modal">&#215;</a>
+	</div>
 
 	<div id="editForm" class="reveal-modal small" data-reveal>
 		<div class="row">
@@ -14,7 +24,7 @@
 				</label>
 			</div>
 			<div class="large-12">
-				<label for="flight-arrive">Arrive Time
+				<label for="edit-arrive">Arrive Time
 					<input type="text" id="edit-arrive"  required>
 				</label>
 			</div>
@@ -41,8 +51,8 @@
 			<div class="large-12">
 				<label for="edit-plane">Plane
 					<select id="edit-plane">
-						<% planes.forEach(function (plane, index) { %>
-						<option value="<%= plane.aid %>"><%= plane.aid +" "+ plane.type %></option>
+						<% allPlanes.forEach(function (allplane, index) { %>
+						<option value="<%= allplane.aid %>"><%= allplane.aid +" "+ allplane.type %></option>
 						<% }) %>
 					</select>
 				</label>
@@ -148,8 +158,8 @@
 					<td class="table-center"><%= flight.destination %></td>
 					<td class="table-center"><%= flight.plane_id %></td>
 					<td class="table-center">
-						<a onclick="populateEditForm('<%= flight.fno%>');"><i class="icon-pencil icon-2x"></i></a>
-						<a onclick=""><i class="icon-remove icon-2x"></i></a>
+						<a onclick="populateEditForm('<%= flight.fno %>');"><i class="icon-pencil icon-2x"></i></a>
+						<a onclick="populateDeleteForm('<%= flight.fno %>');"><i class="icon-remove icon-2x"></i></a>
 					</td>
 				</tr>
 				<% }) %>

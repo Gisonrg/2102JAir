@@ -89,4 +89,30 @@ Flight.prototype.save = function(callback) {
   });
 };
 
+Flight.prototype.update = function(callback) {
+  var flight = {
+    fno : this.fno,
+    depart_time : this.depart,
+    arrive_time : this.arrive,
+    duration : this.duration,
+    origin : this.origin,
+    destination : this.destination,
+    plane_id : this.plane_id
+  };
+  var fno = this.fno;
+  pool.getConnection(function(err, connection) {
+    // Use the connection
+    var newquery = 'UPDATE flight SET ? where fno = \''+ fno+"\'";
+    connection.query(newquery, flight, function(err,
+      result) {
+      if (err) {
+        console.log(err);
+        return callback(err.code);
+      }
+      callback(null);
+      connection.release();
+    });
+  });
+};
+
 module.exports = Flight;

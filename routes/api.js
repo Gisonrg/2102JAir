@@ -206,6 +206,51 @@ router.get('/flights/:fno', function(req, res) {
 	});
 });
 
+/* DELETE removes a plane */
+router.delete('/flights/:fno', function(req, res) {
+	Flight.remove({
+		"fno": req.params.fno
+	}, function(err) {
+		if (err) {
+			res.json({
+				"status": "error",
+				"error": err.code
+			});
+		} else {
+			res.json({
+				"status": "ok"
+			});
+		}
+	});
+});
+
+/* PUT update a flight */
+router.put('/flights/:fno', function(req, res) {
+	var duration = dateCompare(req.body.depart_time, req.body.arrive_time);
+	var updatedFlight = 
+		new Flight(
+			req.params.fno, 
+			convertTimeString(req.body.depart_time), 
+			convertTimeString(req.body.arrive_time),
+			duration, 
+			req.body.origin, 
+			req.body.destination, 
+			req.body.plane_id
+		);
+	updatedFlight.update(function(err) {
+		if (err) {
+			res.json({
+				"status": "error",
+				"error": err.code
+			});
+		} else {
+			res.json({
+				"status": "ok"
+			});
+		}
+	});
+});
+
 router.post('/flights', function(req, res) {
 	var duration = dateCompare(req.body.depart_time, req.body.arrive_time);
 	var flight = 
