@@ -6,6 +6,8 @@ var Airport = require("../model/airport.js");
 var User = require("../model/user.js");
 var Flight = require("../model/flight.js");
 var Seat = require("../model/seat.js");
+var Booking = require("../model/booking.js");
+
 
 function dateCompare(time1,time2) {
 	var t1 = new Date();
@@ -286,6 +288,7 @@ function parseDate(date) {
 function convertDateString(date) {
 	return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
 }
+
 function daydiff(first, second) {
 	return Math.floor((second-first)/(1000*60*60*24))+1;
 }
@@ -390,10 +393,59 @@ router.post('/seats', function(req, res) {
 });
 
 
+router.get('/booking', function(req, res) {
+	Booking.getAll(function(err, data) {
+		if (err) {
+			res.json(err);
+		} else {
+			res.json(data);
+		}
+	});
+});
 
+router.get('/booking/:book_ref', function(req, res) {
+	Booking.get(req.params.book_ref, function(err, data) {
+		if (err) {
+			res.json(err);
+		} else {
+			res.json(data);
+		}
+	});
+});
 
-router.get('/flights/:id', function(req, res) {
-	res.send('getting a flight information');
+router.delete('/booking/:book_ref', function(req, res) {
+	Booking.remove({"book_ref":req.params.book_ref},function(err, data) {
+		if (err) {
+			res.json({
+				"status": "error",
+				"error": err.code
+			});
+		} else {
+			res.json({
+				"status": "ok"
+			});
+		}
+	});
+});
+
+/* PUT update a booking */
+router.put('/booking/:book_ref', function(req, res) {
+	console.log("here");
+	var newSeat = {"seat_id": req.body.seat};
+	console.log(req.params.book_ref);
+	var changes = [newSeat, req.params.book_ref];
+	Booking.update(changes,function(err) {
+		if (err) {
+			res.json({
+				"status": "error",
+				"error": err.code
+			});
+		} else {
+			res.json({
+				"status": "ok"
+			});
+		}
+	});
 });
 
 module.exports = router;

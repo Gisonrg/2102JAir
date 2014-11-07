@@ -1,5 +1,90 @@
 <% include admin-header %>
+<div class="row">
+	<div id="deleteForm" class="reveal-modal tiny" data-reveal>
+		<h2>Are you sure?</h2>
+		<p>You are canceling booking: <span id="delete-booking" style="color:red"></span></p>
+		<div class="small-12 small-centered" style="text-align:center">
+			<button id="delete-submit" class="alert"style="outline:none;width:30%;">Yep</button>
 
+			<button id="delete-cancel" style="outline:none;width:30%;">No</button>
+		</div>
+		<a class="close-reveal-modal">&#215;</a>
+	</div>
 
-    
+	<div id="editForm" class="reveal-modal tiny" data-reveal>
+		<div class="row">
+			<h4>You are changing seat</h4>
+			<div class="large-12">
+				<label for="edit-bookRef">Booking Ref.
+					<input type="text" id="edit-bookRef" disabled>
+				</label>
+			</div>
+			<div class="large-12">
+				<label for="edit-seat">Seat
+					<input type="text" id="edit-seat"  required>
+				</label>
+			</div>
+		<div class="small-6 column" style="text-align:center">
+			<button id="edit-submit" class="alert" style="outline:none;">Change</button>
+			
+		</div>
+		<div class="small-6  column" style="text-align:center">
+			<button id="edit-cancel" style="outline:none;">Cancel</button>
+		</div>
+		<a class="close-reveal-modal">&#215;</a>
+		</div>
+	</div>
+
+	<div class="large-12">
+		<fieldset class="white-bg">
+			<legend class="transparent-bg">Booking Management</legend>
+		<table style="margin:1.85rem 0;">
+			<thead>
+				<tr>
+					<th style="text-align:center;">Booking Reference</th>
+					<th style="text-align:center;">Flight Number</th>
+					<th style="text-align:center;">Depart Time</th>
+					<th style="text-align:center;">Landing Time</th>
+					<th style="text-align:center;">Seat</th>
+					<th style="text-align:center;">Passenger</th>
+					<th style="text-align:center;">From - To</th>
+					<th style="text-align:center;">Options</th>
+				</tr>
+			</thead>
+
+			<tbody id="data-entry">
+				<% 
+				function convertFlightTime(date, time) {
+				  return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+
+				    time.substring(0,5);
+				}
+				function convertBookingTime(date) {
+				  return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+
+				   ("0" + date.getHours()).slice(-2)+":"+("0" + date.getMinutes()).slice(-2);
+				    
+				}
+
+				bookings.forEach(function (booking, index) { %>
+				<tr>
+					<td class="table-center"><%= booking.book_ref %></td>
+					<td class="table-center"><%= booking.flight_no %></td>
+					<td class="table-center"><%= convertFlightTime(booking.flight_time, booking.depart_time) %></td>
+					<td class="table-center"><%= convertFlightTime(booking.flight_time, booking.arrive_time) %></td>
+					<td class="table-center"><%= booking.seat_id %></td>
+					<td class="table-center"><%= booking.name %></td>
+					<td class="table-center"><%= booking.origin + " - " + booking.destination %></td>
+					<td class="table-center">
+						<a onclick="populateEditForm('<%= booking.book_ref %>');"><i class="icon-pencil icon-2x"></i></a>
+						<a onclick="populateDeleteForm('<%= booking.book_ref %>');"><i class="icon-remove icon-2x"></i></a>
+					</td>
+				</tr>
+				<% }); %>
+			</tbody>
+		</table>
+		</fieldset>
+	</div>
+</div>
+
+<script type="text/javascript" src="js/admin/booking.js"></script>
+
 <% include footer %>
