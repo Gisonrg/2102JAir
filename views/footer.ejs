@@ -10,7 +10,14 @@
       		}
       	}
       });
-
+      $(document).ready(function() {
+        if ($('#success_alert').css("display")) {
+          $('#success_alert').delay(500).fadeOut('slow');
+        }
+        if ($('#error_alert').css("display")) {
+          $('#error_alert').delay(500).fadeOut('slow');
+        }
+      });
     </script>
   </body>
 </html>

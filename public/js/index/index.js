@@ -57,3 +57,5 @@ function backgroundResize(){
 $(window).resize(backgroundResize);
 $(window).focus(backgroundResize);
 backgroundResize();
+
+
