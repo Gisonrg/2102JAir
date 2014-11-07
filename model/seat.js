@@ -82,12 +82,8 @@ Seat.search = function(condition, callback) {
 };
 
 Seat.searchFlight = function(totalPeople, condition, callback) {
-  var query = 'SELECT DISTINCT fno, depart_time, arrive_time, origin, destination, DATE_FORMAT(flight_time, "%Y/%m/%d") AS flight_time, price 
-               FROM seat, flight 
-               WHERE seat.flight_no=flight.fno AND '+prepareQuery(condition);
-  query += " AND " + totalPeople +" < (SELECT COUNT(*) 
-                                       FROM seat, flight 
-                                       WHERE seat.flight_no=flight.fno AND seat.available=\'TRUE\' AND "+prepareQuery(condition) + ")";
+  var query = 'SELECT DISTINCT fno, depart_time, arrive_time, origin, destination, DATE_FORMAT(flight_time, "%Y/%m/%d") AS flight_time, price FROM seat, flight WHERE seat.flight_no=flight.fno AND '+prepareQuery(condition);
+  query += " AND " + totalPeople +" < (SELECT COUNT(*) FROM seat, flight WHERE seat.flight_no=flight.fno AND seat.available=\'TRUE\' AND "+prepareQuery(condition) + ")";
   console.log(query);
   pool.getConnection(function(err, connection) {
     // Use the connection
