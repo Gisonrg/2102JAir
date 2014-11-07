@@ -21,7 +21,7 @@
 					<tbody>
 						<% for(var i=0; i<flight.length; i++) { %>
 						<tr>
-							<td><input type="radio" value="<%=flight[i].fno%>" /></td>
+							<td><input type="radio" value="<%=flight[i].fno%>" checked="checked"/></td>
 							<td><%=flight[i].fno%></td>
 							<td><%=flight[i].depart_time+"-"+flight[i].arrive_time%></td>
 							<td><%=flight[i].origin+"-"+flight[i].destination%></td>
@@ -63,9 +63,11 @@
 					</tbody>
 				</table>
 				<input class = "button" type="submit" value="Next" />
-				<%} else { %>
+				<%} else if((returnFlight == null || returnFlight == '') && (flight == null || flight == '')){ %>
 				<p style = "color: #E74C3C">No result found!</p>
-				<% } %>
+				<% } else{%>
+				<p style = "color: #E74C3C">No result found for return flight!</p>
+				<%}%>
 			</form>
 		</div>
 	</p>
