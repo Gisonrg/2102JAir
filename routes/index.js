@@ -44,18 +44,6 @@ router.get('/selectFlights', function(req, res) {
   });
 });
 
-/* GET passengers page. */
-router.get('/passengers', checkLogin);
-router.get('/passengers', function(req, res) {
-  res.render('passengers', { 
-    title: 'J-Air | Passenger information',
-    user : req.session.user,
-    flight : req.session.flight,
-    returnFlight : req.session.returnFlight,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
-  });
-});
 
 /* GET selectSeats page. */
 router.get('/selectSeats', checkLogin);

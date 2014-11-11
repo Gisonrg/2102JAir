@@ -1,22 +1,67 @@
 <% include admin-header %>
-<div class="row"  style="margin-top:4%">
-	<div class="large-10 small-centered columns">
-		<a href="#" class="button big-button user-button">User</a>
-		<a href="#" class="button big-button airport-button">Airport</a>
-		<a href="#" class="button big-button plane-button">Plane</a>
-	</div>
-</div>
-<div class="row"  style="margin-top:0%">
-	<div class="large-10 small-centered columns">
-		<a href="#" class="button big-button flight-button">Flight</a>
-		<a href="#" class="button big-button seat-button">Seat</a>
-		<a href="#" class="button big-button booking-button">Booking</a>
-	</div>
-</div>
-<style type="text/css">
-	.big-button {
-		width:250px;
-		height:250px;
-	}
-</style>
+<link rel="stylesheet" type="text/css" href="css/default.css" />
+<link rel="stylesheet" type="text/css" href="css/component.css" />
+
+<ul class="grid cs-style-3">
+	<li>
+		<figure>
+			<img src="img/admin/passenger.png" alt="img04">
+			<figcaption>
+				<h3>Passenger</h3>
+				<span>manage passengers</span>
+				<a href="/admin/user">Manage</a>
+			</figcaption>
+		</figure>
+	</li>
+	<li>
+		<figure>
+			<img src="img/admin/flight.png" alt="img05">
+			<figcaption>
+				<h3>Flight</h3>
+				<span>manage JAir flights</span>
+				<a href="/admin/flight">Manage</a>
+			</figcaption>
+		</figure>
+	</li>
+	<li>
+		<figure>
+			<img src="img/admin/airplane.png" alt="img02">
+			<figcaption>
+				<h3>Plane</h3>
+				<span>manage airplanes</span>
+				<a href="/admin/plane">Manage</a>
+			</figcaption>
+		</figure>
+	</li>
+	<li>
+		<figure>
+			<img src="img/admin/airport.png" alt="img01">
+			<figcaption>
+				<h3>Airport</h3>
+				<span>manage airports</span>
+				<a href="/admin/airport">Manage</a>
+			</figcaption>
+		</figure>
+	</li>
+	<li>
+		<figure>
+			<img src="img/admin/seat.png" alt="img03">
+			<figcaption>
+				<h3>Seat</h3>
+				<span>manege fligt seats</span>
+				<a href="/admin/seat">Manage</a>
+			</figcaption>
+		</figure>
+	</li>
+	<li>
+		<figure>
+			<img src="img/admin/booking.png" alt="img06">
+			<figcaption>
+				<h3>Booking</h3>
+				<span>manage customer bookings</span>
+				<a href="/admin/booking">Manage</a>
+			</figcaption>
+		</figure>
+	</li>
+</ul>
 <% include footer %>
