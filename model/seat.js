@@ -50,9 +50,30 @@ Seat.getAll = function(callback) {
 Seat.getAvailable = function(querySeat, callback){
   var fno = querySeat.fno;
   var flight_time = querySeat.flight_time;
+  console.log(fno);
+  console.log(flight_time);
   pool.getConnection(function(err, connection){
     connection.query('SELECT DISTINCT sid, seat_class FROM seat s, flight f WHERE s.flight_no = ? AND s.flight_time = ? AND s.sid NOT IN (select seat_id from reservation, seat where reservation.flight_no = seat.flight_no AND reservation.flight_time = seat.flight_time)', 
     [fno, flight_time], function(err, rows, fields){
+      if (err) {
+        return callback(err.code, null);
+      }
+      callback(null, rows);
+      connection.release();
+    });
+  });
+};
+
+Seat.getBookingSeat = function(querySeat, callback){
+  var fno = querySeat.fno;
+  var flight_time = querySeat.flight_time;
+  var seatClass = querySeat.seatClass;
+  console.log(fno);
+  console.log(flight_time);
+  console.log(seatClass);
+  pool.getConnection(function(err, connection){
+    connection.query('SELECT DISTINCT sid FROM seat s, flight f WHERE s.flight_no = ? AND s.seat_class = ? AND s.flight_time = ? AND s.sid NOT IN (select seat_id from reservation, seat where reservation.flight_no = seat.flight_no AND reservation.flight_time = seat.flight_time)', 
+    [fno, seatClass, flight_time], function(err, rows, fields){
       if (err) {
         return callback(err.code, null);
       }

@@ -9,33 +9,43 @@
 				<table>
 					<thead>
 						<tr>
-							<th>Flight No.</th>
-							<th>Depart Time</th>
-							<th>Arrive Time</th>
-							<th>Origin</th>
-							<th>Destination</th>
-							<th>Class</th>
-							<th>Price</th>
+							<th class="table-center">Flight No.</th>
+							<th class="table-center">Depart Time</th>
+							<th class="table-center">Arrive Time</th>
+							<th class="table-center">Origin</th>
+							<th class="table-center">Destination</th>
+							<th class="table-center">Class</th>
+							<th class="table-center">Price</th>
 						</tr>
 					</thead>
+					<% var totalPrice = 0; %>
+					<% if (depart_flight) {%>
 					<tr>
-						<td>JA222</td>
-						<td>2014/11/07 06:15</td>
-						<td>2014/11/07 12:45</td>
-						<td>XIY</td>
-						<td>SIN</td>
-						<td>Economy</td>
-						<td>150</td>
+						<td class="table-center"><%= depart_flight.fno %></td>
+						<td class="table-center"><%= depart_flight.flight_time + " " + depart_flight.depart_time.substring(0, 5) %></td>
+						<td class="table-center"><%= depart_flight.flight_time + " " + depart_flight.arrive_time.substring(0, 5) %></td>
+						<td class="table-center"><%= depart_flight.origin %></td>
+						<td class="table-center"><%= depart_flight.destination %></td>
+						<td class="table-center"><%= depart_flight.seatClass %></td>
+						<td class="table-center"><%= depart_flight.price %></td>
+						
 					</tr>
+					<% totalPrice+=depart_flight.price * depart_flight.passengers;
+					} %>
+					<% if (return_flight) {%>
 					<tr>
-						<td>JA223</td>
-						<td>2014/11/30 07:35</td>
-						<td>2014/11/30 17:55</td>
-						<td>SIN</td>
-						<td>XIY</td>
-						<td>Economy</td>
-						<td>100</td>
+						<td class="table-center"><%= return_flight.fno %></td>
+						<td class="table-center"><%= return_flight.flight_time + " " + return_flight.depart_time.substring(0, 5) %></td>
+						<td class="table-center"><%= return_flight.flight_time + " " + return_flight.arrive_time.substring(0, 5) %></td>
+						<td class="table-center"><%= depart_flight.origin %></td>
+						<td class="table-center"><%= return_flight.destination %></td>
+						<td class="table-center"><%= return_flight.seatClass %></td>
+						<td class="table-center"><%= return_flight.price %></td>
+						
 					</tr>
+					<% 
+					totalPrice+=return_flight.price * depart_flight.passengers;
+					} %>
 				</table>
 			</fieldset>
 		</div>
@@ -47,40 +57,40 @@
 						<tr>
 							<th style="text-align:center;">Name</th>
 							<th style="text-align:center;">Passport</th>
-							<th style="text-align:center;">Sex</th>
 							<th style="text-align:center;">Email</th>
 							<th style="text-align:center;">Contact</th>
+							<th style="text-align:center;">Seat</th>
 						</tr>
 					</thead>
 					<tbody id="data-entry">
+					<% if (depart_flight){
+						for(var i=0;i<depart_flight.passengers;i++) {%>
 						<tr>
 							<td class="table-center"><input type="text"/></td>
 							<td class="table-center"><input type="text"/></td>
 							<td class="table-center"><input type="text"/></td>
 							<td class="table-center"><input type="text"/></td>
-							<td class="table-center"><input type="text"/></td>
+							<td class="table-center">
+								<select class="select-seat">
+								<% seats.forEach(function (seat, index) { %>
+									<option value="<%= seat.sid %>"><%= seat.sid %></option>
+								<% }) %>
+								</select>
+							</td>
 						</tr>
-						<tr>
-							<td class="table-center"><input type="text"/></td>
-							<td class="table-center"><input type="text"/></td>
-							<td class="table-center"><input type="text"/></td>
-							<td class="table-center"><input type="text"/></td>
-							<td class="table-center"><input type="text"/></td>
-						</tr>
-						<tr>
-							<td class="table-center"><input type="text"/></td>
-							<td class="table-center"><input type="text"/></td>
-							<td class="table-center"><input type="text"/></td>
-							<td class="table-center"><input type="text"/></td>
-							<td class="table-center"><input type="text"/></td>
-						</tr>
+					<% }
+					} %>
 					</tbody>
 				</table>
 			</fieldset>
+
+			<span style="margin: 2%;float:right"><button class="alert">Cancel</button></span>
+			<span style="margin: 2%; float:right"><button id="payNow">Pay Now!</button></span>
+			<spanstyle="margin: 2%;float:right"><h4>Total:</h4>$<%= totalPrice  %></span>
 		</div>
 	</div>
 </div>
 
-
+<script type="text/javascript" src="js/index/checkout.js"></script>
 
 <% include footer %>

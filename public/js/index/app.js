@@ -40,7 +40,9 @@ angular.module('result', ['720kb.datepicker','ngTable','ngCookies'])
 		function($scope, $cookieStore, ngTableParams, $http) {
 			$scope.search_data;
 
+			$scope.showSingle = false;
 			$scope.showReturn = false;
+			$scope.showBook = false;
 
 			$scope.showEmpty;
 
@@ -60,6 +62,8 @@ angular.module('result', ['720kb.datepicker','ngTable','ngCookies'])
 
 			// first of all, decide if there is any search result.
 			if ($cookieStore.get('searchResult')) {
+				$scope.showSingle = true;
+
 				search_data = $cookieStore.get('searchResult');
 				$scope.from = search_data.from;
 				$scope.to = search_data.to;
@@ -68,8 +72,9 @@ angular.module('result', ['720kb.datepicker','ngTable','ngCookies'])
 				$scope.no_person = search_data.no_person;
 				$scope.trip_type =search_data.trip_type;
 				$scope.seat_class = search_data.seat_class;
-				
+
 				$cookieStore.put('totalTickets',search_data.no_person);
+
 				// there is searching result, go to API fetch data
 				if (search_data.trip_type=='single') {
 					$http.get('/api/search/'+search_data.from+"/"+search_data.to+"/"+search_data.no_person+"/"+search_data.depart+"/"+search_data.seat_class).
@@ -78,7 +83,10 @@ angular.module('result', ['720kb.datepicker','ngTable','ngCookies'])
 						$scope.result = data;
 						// populate table
 						$scope.resultSingle = $scope.result[0];
-						console.log("populate table"+JSON.stringify($scope.resultSingle));
+						// console.log("populate table"+JSON.stringify($scope.resultSingle));
+						if ($scope.resultSingle.length != 0) {
+							$scope.showBook = true;
+						}
 					    $scope.tableSingle = new ngTableParams({
 					        page: 1,            // show first page
 					        count: 50           // count per page
@@ -89,7 +97,7 @@ angular.module('result', ['720kb.datepicker','ngTable','ngCookies'])
 					            $defer.resolve($scope.resultSingle);
 					        }
 					    });
-				});
+					});
 
 				} else {
 					// searchning for return flight
@@ -100,6 +108,9 @@ angular.module('result', ['720kb.datepicker','ngTable','ngCookies'])
 						// populate table
 						$scope.resultSingle = $scope.result[0];
 						$scope.resultReturn = $scope.result[1];
+						if ($scope.resultSingle.length != 0 && $scope.resultReturn.length!=0) {
+							$scope.showBook = true;
+						}
 						// console.log("populate table"+$scope.data);
 					    $scope.tableSingle = new ngTableParams({
 					        page: 1,            // show first page
@@ -157,11 +168,17 @@ angular.module('result', ['720kb.datepicker','ngTable','ngCookies'])
 		        };
 		       	$cookieStore.put('searchResult',form_data);
 		       	window.location.replace("/result");
-			}	
+			};
 
-
-
-
-
+			$scope.bookNow = function() {
+				var data = {"depart": $scope.resultSingle, 
+					"return" : $scope.resultReturn, "class": search_data.seat_class};
+				$http.post('/result', data).
+				  success(function(feedback, status) {
+				    if (status == 200) {
+				    	window.location.replace("/checkout");
+				    }	
+				 });
+			};
 		}
 );

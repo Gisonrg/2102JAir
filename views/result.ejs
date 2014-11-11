@@ -58,7 +58,7 @@
 
 	<div class="large-9 column">
 
-	<fieldset class="white-bg">
+	<fieldset class="white-bg" ng-show="showSingle">
 	<legend class="transparent-bg">Select Depart Flight</legend>      
         <table ng-table="tableSingle" class="table table-center" >
         <tr ng-repeat="flight in $data">
@@ -84,13 +84,13 @@
             <td data-title="'Price'" class="table-center">{{flight.price}}</td>
         </tr>
         </table>
+
     </fieldset>
-
+    <!-- Put in center! -->
+    <button ng-show="showBook" ng-click="bookNow()" class="outline:none;">Book Now</button>
+    
 	</div>
-
-        
-
-
+	
 </div>
 
 <script type="text/javascript">

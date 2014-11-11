@@ -41,18 +41,46 @@ router.get('/result', function(req, res) {
   });
 });
 
+router.post('/result', checkLogin);
+router.post('/result', function(req, res) {
+  if (req.body.depart[0].fno) {
+    req.session.depart = req.body.depart[0];
+    req.session.depart.seatClass = req.body.class;
+  }
+  if (req.body.return[0].fno) {
+    req.session.return = req.body.return[0];
+    req.session.return.seatClass = req.body.class;
+  }
+  res.send("success");
+});
 
 /* GET selectSeats page. */
-router.get('/selectSeats', checkLogin);
-router.get('/selectSeats', function(req, res) {
-  res.render('selectSeats', { 
-    title: 'J-Air | Seat Selection',
-    user : req.session.user,
-    flight : req.session.flight,
-    returnFlight : req.session.returnFlight,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
+router.get('/checkout', checkLogin);
+router.get('/checkout', function(req, res) {
+  var seatClass = req.session.depart.seatClass;
+  console.log("session:" + seatClass);
+  Seat.getBookingSeat({
+      "fno": req.session.depart.fno,
+      "flight_time": req.session.depart.flight_time,
+      "seatClass": seatClass
+    }, function(err, data) {
+    console.log(data);
+    res.render('checkOut', { 
+        title: 'J-Air | Check Out Now',
+        user : req.session.user,
+        success: req.flash('success').toString(),
+        error: req.flash('error').toString(),
+        depart_flight: req.session.depart,
+        return_flight: req.session.return,
+        seats: data
+      });
   });
+});
+
+router.post('/checkout', checkLogin);
+router.post('/checkout', function(req, res) {
+  // send session from checkOut here.
+  res.send("success");
 });
 
 /* GET paysuccess page. */
@@ -61,8 +89,8 @@ router.get('/paysuccess', function(req, res) {
   res.render('paysuccess', {
     title: 'J-Air | Pay Success',
     user : req.session.user,
-    flight : req.session.flight,
-    returnFlight : req.session.returnFlight,
+    depart_flight: req.session.depart,
+    return_flight: req.session.return,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
