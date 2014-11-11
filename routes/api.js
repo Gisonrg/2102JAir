@@ -320,6 +320,18 @@ router.get('/seats', function(req, res) {
 	}
 });
 
+router.get('/seats/:flight_no/:flight_time', function(req, res) {
+	Seat.getAvailable( {"fno": req.params.flight_no, "flight_time":req.params.flight_time},function(error, data) {
+			if (error) {
+				res.json({
+					"status": "error",
+					"error": error.code
+				});
+			} else {
+				res.json(data);
+			}
+		});
+});
 
 router.post('/seats', function(req, res) {
 	var flight_no = req.body.flight;

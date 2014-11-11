@@ -16,27 +16,42 @@ Booking.getAll = function(callback) {
 	pool.getConnection(function(err, connection) {
     // Use the connection
     connection.query('SELECT * from reservation, seat, passenger, flight where reservation.seat_id = seat.sid and passenger.pid = reservation.passenger_id and reservation.flight_no = seat.flight_no and seat.flight_no = flight.fno and reservation.flight_time = seat.flight_time',
-    	 function(err, rows, fields) {
-    	if (err) {
-    		return callback(err.code, null);
-    	}
+    	function(err, rows, fields) {
+    		if (err) {
+    			return callback(err.code, null);
+    		}
 
-    	var output = [];
-    	for (var i in rows) {
-    		output.push(rows[i]);
-    	}
-    	callback(null, output);
+    		var output = [];
+    		for (var i in rows) {
+    			output.push(rows[i]);
+    		}
+    		callback(null, output);
 
-    	connection.release();
-    });
+    		connection.release();
+    	});
 });
 };
 
 Booking.get = function(book_ref, callback) {
 	pool.getConnection(function(err, connection) {
-		    connection.query('SELECT * from reservation, seat, passenger, flight where reservation.seat_id = seat.sid and passenger.pid = reservation.passenger_id and reservation.flight_no = seat.flight_no and reservation.flight_time = seat.flight_time and ?',
- 		{
+		connection.query('SELECT * from reservation, seat, passenger, flight where reservation.seat_id = seat.sid and passenger.pid = reservation.passenger_id and reservation.flight_no = seat.flight_no and seat.flight_no = flight.fno and reservation.flight_time = seat.flight_time and ?',
+		{
 			"book_ref": book_ref
+		}, function(err, rows, fields) {
+			if (err) {
+				return callback(err.code, null);
+			}
+			callback(null, rows);
+			connection.release();
+		});
+	});
+};
+
+Booking.manage = function(email, callback){
+	pool.getConnection(function(err, connection) {
+		connection.query('SELECT * from reservation, seat, passenger, flight where reservation.seat_id = seat.sid and passenger.pid = reservation.passenger_id and reservation.flight_no = seat.flight_no and seat.flight_no = flight.fno and reservation.flight_time = seat.flight_time and ?',
+		{
+			"passenger.email": email
 		}, function(err, rows, fields) {
 			if (err) {
 				return callback(err.code, null);
@@ -65,18 +80,18 @@ Booking.update = function(changes, callback) {
 };
 
 Booking.remove = function(booking, callback) {
-  pool.getConnection(function(err, connection) {
+	pool.getConnection(function(err, connection) {
     // Use the connection
     connection.query('DELETE from reservation where ?', booking, function(err,
-      rows, fields) {
-      if (err) {
-        console.log(err);
-        return callback(err.code);
-      }
-      callback(null);
-      connection.release();
+    	rows, fields) {
+    	if (err) {
+    		console.log(err);
+    		return callback(err.code);
+    	}
+    	callback(null);
+    	connection.release();
     });
-  });
+});
 };
 
 Booking.prototype.add = function(callback) {

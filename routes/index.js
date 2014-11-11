@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var User = require('../model/user.js');
 var Seat = require('../model/seat.js');
+var Booking = require('../model/booking.js');
+
 var crypto = require('crypto');
 
 /* GET home page. */
@@ -28,18 +30,6 @@ router.get('/search', function(req, res) {
   });
 });
 
-/* GET booking page. */
-router.get('/booking', checkLogin);
-router.get('/booking', function(req, res) {
-  res.render('booking', { 
-    title: 'J-Air | My Bookings',
-    user : req.session.user,
-    flight : req.session.flight,
-    returnFlight : req.session.returnFlight,
-    success: req.flash('success').toString(),
-    error: req.flash('error').toString()
-  });
-});
 
 /* GET selectFlights page. */
 router.get('/selectFlights', function(req, res) {
@@ -287,6 +277,22 @@ router.post('/search', function(req, res) {
       }
     });
   } 
+});
+
+/* GET search page. */
+router.get('/booking', checkLogin);
+router.get('/booking', function(req, res) {
+  Booking.manage(req.session.user.email, function(err, bookings) {
+    res.render('booking', { 
+      title: 'J-Air | Booking',
+      user : req.session.user,
+      flight : req.session.flight,
+      returnFlight : req.session.returnFlight,
+      success: req.flash('success').toString(),
+      error: req.flash('error').toString(),
+      bookings: bookings
+    });
+  });
 });
 
 
