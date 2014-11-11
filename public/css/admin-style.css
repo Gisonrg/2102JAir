@@ -1,6 +1,6 @@
 body {
-    background-image: url('../img/grey.png');
-    background-repeat: repeat;
+	background-image: url('../img/grey.png');
+	background-repeat: repeat;
 }
 
 .white-bg {
@@ -21,4 +21,9 @@ body {
 
 .table-center {
 	text-align:center;
+}
+
+img {
+	width: 100%;
+	background-color: white;
 }
