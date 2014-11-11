@@ -1,0 +1,56 @@
+<% include header %>
+<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="css/paysuccess.css">
+
+<div class="row">
+	<div class="small-12 large-9 large-centered columns">
+		<h3 class="heading">Thank you for booking with JAir!</h3>
+		<fieldset class="white-bg">
+			<legend class="transparent-bg">Flight confirmed</legend>
+			<div class="row">
+				<div class="small-9 large-8 columns">
+					<p>Hi <%=user.name%>,</p>
+					<p>Your payment is <strong style="color: #00A388">successful!</strong></p>
+					<p>We will shortly send the itinerary to your email: <br><strong style="color: #3498DB"><u><%= user.email %></u></strong></p>
+				</div>
+				<div class="small-3 large-3 columns logo">
+					<img src="/img/jair.png">
+				</div>
+			</div>
+			<fieldset class="grey-bg">
+				<p>Your booking reference is:  <strong style="color: #E74C3C">J-0001</strong></p>
+				<div class="small-9 large-9 large-centered columns">
+					<ul class="pricing-table">
+						<li class="title">JA123</li>
+						<li class="price">$99.99</li>
+						<li class="bullet-item">
+							<div class="small-11 large-11 large-centered columns">
+								<table style="margin-bottom: 0rem">
+									<tr>
+										<td style="text-align: right">Singapore</td>
+										<td style="text-align: center">&#10162;</td>
+										<td style="text-align: left">Xi'an</td>
+									</tr>
+								</table>
+							</div>
+						</li>
+						<li class="bullet-item">
+							<div class="small-11 large-11 large-centered columns">
+								<table style="margin-bottom: 0rem">
+									<tr>
+										<td style="text-align: right">08:00</td>
+										<td style="text-align: center">&#10162;</td>
+										<td style="text-align: left">11:25</td>
+									</tr>
+								</table>
+							</div>
+						</li>
+						<li class="cta-button"><a class="button" href="/booking">Manage my booking</a></li>
+					</ul>
+				</div>
+			</fieldset>
+		</fieldset>
+	</div>
+</div>
+
+<% include footer %>

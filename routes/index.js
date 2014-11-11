@@ -18,6 +18,7 @@ router.get('/', function(req, res) {
   });
 });
 
+
 /* GET search page. */
 router.get('/search', function(req, res) {
   res.render('search', { 
@@ -66,11 +67,11 @@ router.get('/selectSeats', function(req, res) {
   });
 });
 
-/* GET checkOut page. */
-router.get('/checkOut', checkLogin);
-router.get('/checkOut', function(req, res) {
-  res.render('checkOut', { 
-    title: 'J-Air | Check Out',
+/* GET paysuccess page. */
+router.get('/paysuccess', checkLogin);
+router.get('/paysuccess', function(req, res) {
+  res.render('paysuccess', {
+    title: 'J-Air | Pay Success',
     user : req.session.user,
     flight : req.session.flight,
     returnFlight : req.session.returnFlight,
@@ -78,6 +79,7 @@ router.get('/checkOut', function(req, res) {
     error: req.flash('error').toString()
   });
 });
+
 
 /* GET login page. */
 router.get('/login', checkNotLogin);

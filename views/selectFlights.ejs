@@ -10,12 +10,13 @@
 				<table>
 					<thead>
 						<tr>
-							<th width="6%">&nbsp;&nbsp;</th>
-							<th width="16.7%">Flight No.</th>
+							<th width="5%">&nbsp;&nbsp;</th>
+							<th width="15.7%">Flight No.</th>
 							<th width="25.2%">Depart Time-Arrive Time</th>
-							<th width="20.7%">Origin-Destination</th>
-							<th width="20.7%">Price/Passenger</th>
-							<th width="16.7%">Total Price</th>
+							<th width="17.7%">Origin-Destination</th>
+							<th width="17.7%">Price/Passenger</th>
+							<th width="14.7%">Total Price</th>
+							<th width="10.0%">Seat ID</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -27,6 +28,7 @@
 							<td><%=flight[i].origin+"-"+flight[i].destination%></td>
 							<td><%=flight[i].price%></td>
 							<td><%=flight[i].price*flight[i].passengers%></td>
+							<td></td>
 						</tr>
 						<% } %>
 					</tbody>
@@ -62,12 +64,12 @@
 						<% } %>
 					</tbody>
 				</table>
-				<input class = "button" type="submit" value="Next" />
 				<%} else if((returnFlight == null || returnFlight == '') && (flight == null || flight == '')){ %>
 				<p style = "color: #E74C3C">No result found!</p>
 				<% } else{%>
 				<p style = "color: #E74C3C">No result found for return flight!</p>
 				<%}%>
+				<input class = "button" type="submit" value="Next" />
 			</form>
 		</div>
 	</p>
