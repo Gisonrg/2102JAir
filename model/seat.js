@@ -47,6 +47,21 @@ Seat.getAll = function(callback) {
   });
 };
 
+Seat.getAvailable = function(querySeat, callback){
+  var fno = querySeat.fno;
+  var flight_time = querySeat.flight_time;
+  pool.getConnection(function(err, connection){
+    connection.query('SELECT DISTINCT sid, seat_class FROM seat s, flight f WHERE s.flight_no = ? AND s.flight_time = ? AND s.sid NOT IN (select seat_id from reservation, seat where reservation.flight_no = seat.flight_no AND reservation.flight_time = seat.flight_time)', 
+    [fno, flight_time], function(err, rows, fields){
+      if (err) {
+        return callback(err.code, null);
+      }
+      callback(null, rows);
+      connection.release();
+    });
+  });
+};
+
 function prepareQuery(condition) {
   var query = "";
   var length = Object.keys(condition).length;
@@ -103,10 +118,6 @@ Seat.searchFlight = function(totalPeople, condition, callback) {
     });
   });
 };
-
-Seat.getAvailable = function(condition, callback) {
-  var query = 'SELECT COUNT(*) FROM seat, flight WHERE seat.flight_no=flight.fno AND seat.';
-}
 
 Seat.remove = function(sid, callback) {
   pool.getConnection(function(err, connection) {
