@@ -1,8 +1,18 @@
 function populateEditForm(booking) {
   $('#edit-bookRef').val(booking);
-  $.getJSON("/api/booking/"+booking, function(data) {
+  $.getJSON("/api/booking/"+ booking, function(data) {
     var booking = data[0];
-    $('#edit-seat').val(booking.seat_id);
+
+    $.getJSON("/api/seats/"+booking.flight_no + "/" + convertFlightTime(new Date(booking.flight_time)), function(data) {
+      $("#edit-seat").html('');
+      for(var i in data){
+        var seat = data[i];
+        var sid = seat.sid,
+        seat_class = seat.seat_class;
+        console.log(seat);
+        $("#edit-seat").append('<option' + ' value="' + sid + '">' + sid + ' (' + seat_class +  ')' +'</option>');
+      }
+    });
   });
 
   $('#edit-cancel').click(function(){
@@ -56,6 +66,10 @@ function populateDeleteForm(booking) {
   });
 
   $('#deleteForm').foundation('reveal', 'open');
+}
+
+function convertFlightTime(date) {
+  return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate();
 }
 
 $(document).ready(function() {

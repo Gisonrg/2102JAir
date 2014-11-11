@@ -21,7 +21,9 @@
 			</div>
 			<div class="large-12">
 				<label for="edit-seat">Seat
-					<input type="text" id="edit-seat"  required>
+					<select id="edit-seat">
+
+					</select>
 				</label>
 			</div>
 		<div class="small-6 column" style="text-align:center">
@@ -68,6 +70,7 @@
 				<tr>
 					<td class="table-center"><%= booking.book_ref %></td>
 					<td class="table-center"><%= booking.flight_no %></td>
+					<%console.log(booking);%>
 					<td class="table-center"><%= convertFlightTime(booking.flight_time, booking.depart_time) %></td>
 					<td class="table-center"><%= convertFlightTime(booking.flight_time, booking.arrive_time) %></td>
 					<td class="table-center"><%= booking.seat_id %></td>

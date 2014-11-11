@@ -21,66 +21,66 @@
 			</div>
 			<div class="large-12">
 				<label for="edit-seat">Seat
-					<input type="text" id="edit-seat"  required>
+					<select id="edit-seat"></select>
 				</label>
 			</div>
-		<div class="small-6 column" style="text-align:center">
-			<button id="edit-submit" class="alert" style="outline:none;">Change</button>
-			
-		</div>
-		<div class="small-6  column" style="text-align:center">
-			<button id="edit-cancel" style="outline:none;">Cancel</button>
-		</div>
-		<a class="close-reveal-modal">&#215;</a>
+			<div class="small-6 column" style="text-align:center">
+				<button id="edit-submit" class="alert" style="outline:none;">Change</button>
+
+			</div>
+			<div class="small-6  column" style="text-align:center">
+				<button id="edit-cancel" style="outline:none;">Cancel</button>
+			</div>
+			<a class="close-reveal-modal">&#215;</a>
 		</div>
 	</div>
 
 	<div class="large-12">
 		<fieldset class="white-bg">
 			<legend class="transparent-bg">Booking Management</legend>
-		<table style="margin:1.85rem 0;">
-			<thead>
-				<tr>
-					<th style="text-align:center;">Booking Reference</th>
-					<th style="text-align:center;">Flight Number</th>
-					<th style="text-align:center;">Depart Time</th>
-					<th style="text-align:center;">Landing Time</th>
-					<th style="text-align:center;">Seat</th>
-					<th style="text-align:center;">Passenger</th>
-					<th style="text-align:center;">From - To</th>
-					<th style="text-align:center;">Options</th>
-				</tr>
-			</thead>
+			<table style="margin:1.85rem 0;">
+				<thead>
+					<tr>
+						<th style="text-align:center;">Booking Reference</th>
+						<th style="text-align:center;">Flight Number</th>
+						<th style="text-align:center;">Depart Time</th>
+						<th style="text-align:center;">Landing Time</th>
+						<th style="text-align:center;">Seat</th>
+						<th style="text-align:center;">Passenger</th>
+						<th style="text-align:center;">From - To</th>
+						<th style="text-align:center;">Options</th>
+					</tr>
+				</thead>
 
-			<tbody id="data-entry">
-				<% 
-				function convertFlightTime(date, time) {
-				  return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+
-				    time.substring(0,5);
-				}
-				function convertBookingTime(date) {
-				  return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+
-				   ("0" + date.getHours()).slice(-2)+":"+("0" + date.getMinutes()).slice(-2);
-				    
-				}
+				<tbody id="data-entry">
+					<% 
+					function convertFlightTime(date, time) {
+						return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+
+						time.substring(0,5);
+					}
+					function convertBookingTime(date) {
+						return date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+" "+
+						("0" + date.getHours()).slice(-2)+":"+("0" + date.getMinutes()).slice(-2);
 
-				bookings.forEach(function (booking, index) { %>
-				<tr>
-					<td class="table-center"><%= booking.book_ref %></td>
-					<td class="table-center"><%= booking.flight_no %></td>
-					<td class="table-center"><%= convertFlightTime(booking.flight_time, booking.depart_time) %></td>
-					<td class="table-center"><%= convertFlightTime(booking.flight_time, booking.arrive_time) %></td>
-					<td class="table-center"><%= booking.seat_id %></td>
-					<td class="table-center"><%= booking.name %></td>
-					<td class="table-center"><%= booking.origin + " - " + booking.destination %></td>
-					<td class="table-center">
-						<a onclick="populateEditForm('<%= booking.book_ref %>');"><i class="icon-pencil icon-2x"></i></a>
-						<a onclick="populateDeleteForm('<%= booking.book_ref %>');"><i class="icon-remove icon-2x"></i></a>
-					</td>
-				</tr>
-				<% }); %>
-			</tbody>
-		</table>
+					}
+
+					bookings.forEach(function (booking, index) { %>
+					<tr>
+						<td class="table-center"><%= booking.book_ref %></td>
+						<td class="table-center"><%= booking.flight_no %></td>
+						<td class="table-center"><%= convertFlightTime(booking.flight_time, booking.depart_time) %></td>
+						<td class="table-center"><%= convertFlightTime(booking.flight_time, booking.arrive_time) %></td>
+						<td class="table-center"><%= booking.seat_id %></td>
+						<td class="table-center"><%= booking.name %></td>
+						<td class="table-center"><%= booking.origin + " - " + booking.destination %></td>
+						<td class="table-center">
+							<a onclick="populateEditForm('<%= booking.book_ref %>');"><i class="icon-pencil icon-2x"></i></a>
+							<a onclick="populateDeleteForm('<%= booking.book_ref %>');"><i class="icon-remove icon-2x"></i></a>
+						</td>
+					</tr>
+					<% }); %>
+				</tbody>
+			</table>
 		</fieldset>
 	</div>
 </div>
