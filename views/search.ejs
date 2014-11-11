@@ -2,53 +2,60 @@
 <link rel="stylesheet" href="css/home.css">
 <div class="fullscreen background"  data-img-width="2560" data-img-height="1600">
 
-	<div class="content-a">
+	<div class="content-a" ng-controller="SearchCtrl">
 		<div class="content-b">
 			<div class="large-8 large-centered column">
 				<p class="home-big-word">Hi, where is your next destination?</p>
-				<form id="searching-seat-form" method="post" action="/search">
+				<form ng-submit="search()">
 					<div class="row">
-						<div class="small-4 columns">
+						<div class="small-3 columns">
 							<label  style="color:white;">From
-								<input type="text" id="from" name="from" placeholder="From..." />
+								<input type="text" ng-model="from" placeholder="From..." />
 							</label>
 						</div>
-						<div class="small-4 columns">
+						<div class="small-3 columns">
 							<label  style="color:white;">To
-								<input type="text" id="search_to" name="to"placeholder="Destination..." />
+								<input type="text" ng-model="to" placeholder="Destination..." />
+							</label>
+						</div>
+						<div class="large-3 columns">
+						<label style="color:white;" >Depart
+							<datepicker  date-format="yyyy-MM-dd">
+							  <input ng-model="depart" type="text" placeholder="Depart..." />
+							</datepicker>
+							</label>
+						</div>
+						<div class="large-3 columns" >
+							<label  style="color:white;" ng-hide="trip_type=='single'">Return
+								<datepicker date-format="yyyy-MM-dd">
+							  <input ng-model="return" type="text" placeholder="Return..." />
+							</datepicker>
+							</label>
+						</div>
+						
+					</div>
+					<div class="row">
+						
+					</div>
+					<div class="row">
+						<div class="large-3 columns" >
+							<label  style="color:white;">Number of passengers
+								<input type="text" ng-model="no_person" placeholder="Number of passengers..." />
 							</label>
 						</div>
 						<div class="small-4 columns">
-
-							<label style="color:white;">Passenger(s)
-								<input type="text" id="search_passenger" name="passenger" value="1" placeholder="Number of passengers..." />
-							</label>
-						</div>
-					</div>
-					<div class="row">
-						<div class="large-6 columns">
-							<label  style="color:white;" >Depart
-								<input type="text" id="depart_date" name="depart_date" placeholder="Depart" />
-							</label>
-						</div>
-						<div class="large-6 columns">
-							<label  style="color:white;">Return
-								<input type="text"  id="return_date" name="return_date" placeholder="Return" />
-							</label>
-						</div>
-					</div>
-					<div class="row">
-						<div class="small-7 columns">
 							<label style="color:white;">Trip Type</label>
-							<input type="radio"  name="trip_type" value="Single" id="search_type_single"><label for="search_type_single" style="color:white;font-size:20px;">Single</label>
-							<input type="radio" name="trip_type" value="Return" id="search_type_return" checked><label for="search_type_return" style="color:white;font-size:20px;" checked="checked">Return</label>
+							<input type="radio"  ng-model="trip_type" value="single"><label for="search_type_single" style="color:white;">Single</label>
+
+							<input type="radio" ng-model="trip_type" value="return"><label for="search_type_return" style="color:white;">Return</label>
 						</div>
+			
 						<div class="small-5 columns">
 							<label style="color:white;">Class
-								<select id="search_class" name="seat_class">
-									<option value="Economy" selected="selected">Economy</option>
+								<select ng-model="seat_class">
+									<option value="Economy">Economy</option>
 									<option value="Business">Business</option>
-									<option value="Suite">Suite</option>
+									<option value="First">First</option>
 								</select>
 							</label>
 						</div>
@@ -60,5 +67,5 @@
 	</div>
 </div>
 <script type="text/javascript" src="js/index/index.js"></script>
-<script type="text/javascript" src="js/index/search.js"></script>
+<!-- <script type="text/javascript" src="js/index/search.js"></script> -->
 <% include footer %>
