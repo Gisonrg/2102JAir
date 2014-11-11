@@ -143,6 +143,7 @@ router.get('/logout', function (req, res) {
 });
 
 /* GET register page. */
+router.get('/', checkNotLogin);
 router.get('/register', function(req, res) {
   res.render('register', {
     title: 'J-Air | Register',
