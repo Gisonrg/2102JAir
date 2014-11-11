@@ -2337,16 +2337,18 @@ meta.foundation-mq-topbar {
     padding: 0.9375rem 1.25rem;
     text-align: center;
     color: #eeeeee;
+    border-bottom: solid 10px skyblue;
     font-weight: normal;
-    font-size: 1rem;
+    font-size: 1.5rem;
     font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; }
   .pricing-table .price {
-    background-color: #f6f6f6;
+    background-color: white;
     padding: 0.9375rem 1.25rem;
     text-align: center;
     color: #333333;
+    border-bottom: solid 1px #dddddd;
     font-weight: normal;
-    font-size: 2rem;
+    font-size: 1.25rem;
     font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif; }
   .pricing-table .description {
     background-color: white;
@@ -2364,7 +2366,7 @@ meta.foundation-mq-topbar {
     color: #333333;
     font-size: 0.875rem;
     font-weight: normal;
-    border-bottom: dotted 1px #dddddd; }
+    /*border-bottom: dotted 1px #dddddd;*/ }
   .pricing-table .cta-button {
     background-color: white;
     text-align: center;
