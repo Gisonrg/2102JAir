@@ -1,7 +1,86 @@
 <% include header %>
-<div class="row" style="margin:2% auto; width:70%; text-align:center;">
-	<h2>Check Out</h2>
-	<p>
-	</p>
+<link rel="stylesheet" href="css/user.css">
+<div class="row">
+	<div class="large-12">
+		<span class="table-center"><h2>Ticket Booking</h2></span>
+		<div class="large-12 columns" >
+			<fieldset class="white-bg">
+				<legend class="transparent-bg">Flight Information</legend>
+				<table>
+					<thead>
+						<tr>
+							<th>Flight No.</th>
+							<th>Depart Time</th>
+							<th>Arrive Time</th>
+							<th>Origin</th>
+							<th>Destination</th>
+							<th>Class</th>
+							<th>Price</th>
+						</tr>
+					</thead>
+					<tr>
+						<td>JA222</td>
+						<td>2014/11/07 06:15</td>
+						<td>2014/11/07 12:45</td>
+						<td>XIY</td>
+						<td>SIN</td>
+						<td>Economy</td>
+						<td>150</td>
+					</tr>
+					<tr>
+						<td>JA223</td>
+						<td>2014/11/30 07:35</td>
+						<td>2014/11/30 17:55</td>
+						<td>SIN</td>
+						<td>XIY</td>
+						<td>Economy</td>
+						<td>100</td>
+					</tr>
+				</table>
+			</fieldset>
+		</div>
+		<div class="large-12 columns" >
+			<fieldset class="white-bg">
+				<legend class="transparent-bg">Passenger</legend>
+				<table style="">
+					<thead>
+						<tr>
+							<th style="text-align:center;">Name</th>
+							<th style="text-align:center;">Passport</th>
+							<th style="text-align:center;">Sex</th>
+							<th style="text-align:center;">Email</th>
+							<th style="text-align:center;">Contact</th>
+						</tr>
+					</thead>
+					<tbody id="data-entry">
+						<tr>
+							<td class="table-center"><input type="text"/></td>
+							<td class="table-center"><input type="text"/></td>
+							<td class="table-center"><input type="text"/></td>
+							<td class="table-center"><input type="text"/></td>
+							<td class="table-center"><input type="text"/></td>
+						</tr>
+						<tr>
+							<td class="table-center"><input type="text"/></td>
+							<td class="table-center"><input type="text"/></td>
+							<td class="table-center"><input type="text"/></td>
+							<td class="table-center"><input type="text"/></td>
+							<td class="table-center"><input type="text"/></td>
+						</tr>
+						<tr>
+							<td class="table-center"><input type="text"/></td>
+							<td class="table-center"><input type="text"/></td>
+							<td class="table-center"><input type="text"/></td>
+							<td class="table-center"><input type="text"/></td>
+							<td class="table-center"><input type="text"/></td>
+						</tr>
+					</tbody>
+				</table>
+			</fieldset>
+		</div>
+	</div>
 </div>
+
+
+
 <% include footer %>
