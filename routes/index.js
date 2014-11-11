@@ -23,8 +23,6 @@ router.get('/search', function(req, res) {
   res.render('search', { 
   	title: 'J-Air | Search',
   	user : req.session.user,
-    flight : req.session.flight,
-    returnFlight : req.session.returnFlight,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -32,14 +30,13 @@ router.get('/search', function(req, res) {
 
 
 /* GET selectFlights page. */
-router.get('/selectFlights', function(req, res) {
-  res.render('selectFlights', { 
+router.get('/result', function(req, res) {
+  res.render('result', { 
     title: 'J-Air | Select Flights',
     user : req.session.user,
-    flight : req.session.flight,
-    returnFlight : req.session.returnFlight,
     success: req.flash('success').toString(),
-    error: req.flash('error').toString()
+    error: req.flash('error').toString(),
+    numbers:{"haha":2}
   });
 });
 
@@ -212,72 +209,6 @@ router.post('/profile', function(req, res) {
       res.redirect('/profile');
     }
   });
-});
-
-/* POST search information. */
-router.post('/search', function(req, res) {
-  req.session.flight = null;
-  req.session.returnFlight = null;
-  
-  var from = req.body.from,
-  to = req.body.to,
-  passenger = parseInt(req.body.passenger),
-  depart_date = req.body.depart_date,
-  return_date = req.body.return_date,
-  trip_type = req.body.trip_type,
-  seat_class = req.body.seat_class;
-
-  if (trip_type=="Single"){ 
-    var single_query = {
-      'seat.seat_class' : seat_class,
-      'seat.flight_time' : depart_date,
-      'flight.origin' : from,
-      'flight.destination' : to
-    };
-
-    Seat.searchFlight(passenger, single_query, function(error, result) {
-      if(result==null) {
-        res.redirect('/search');
-      } else {
-        var flight_list = result;
-        req.session.flight = flight_list;
-        res.redirect('/selectFlights');
-      }
-    });
-  } else {
-    var single_query = {
-      'seat.seat_class' : seat_class,
-      'seat.flight_time' : depart_date,
-      'flight.origin' : from,
-      'flight.destination' : to
-    };
-
-    var return_query = {
-      'seat.seat_class' : seat_class,
-      'seat.flight_time' : return_date,
-      'flight.origin' : to,
-      'flight.destination' : from
-    };
-
-    Seat.searchFlight(passenger, single_query, function(error, result) {
-      if(result==null) {
-        res.redirect('/search');
-      } else {
-        var flight_list = result;
-        req.session.flight = flight_list;
-      }
-    });
-
-    Seat.searchFlight(passenger, return_query, function(error, result) {
-      if(result==null) {
-        res.redirect('/search');
-      } else {
-        var flight_list = result;
-        req.session.returnFlight = flight_list;
-        res.redirect('/selectFlights');
-      }
-    });
-  } 
 });
 
 /* GET search page. */

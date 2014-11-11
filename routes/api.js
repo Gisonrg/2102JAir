@@ -293,6 +293,7 @@ function daydiff(first, second) {
 	return Math.floor((second-first)/(1000*60*60*24))+1;
 }
 
+
 router.get('/seats', function(req, res) {
 	if (Object.keys(req.query).length == 0) {
 		Seat.getAll(function(error, data) {
@@ -331,6 +332,75 @@ router.get('/seats/:flight_no/:flight_time', function(req, res) {
 				res.json(data);
 			}
 		});
+});
+
+/* GET return trip query. */
+router.get('/search/:from/:to/:passenger/:depart_date/:return_date/:seat_class', function(req, res) {
+	var from = req.params.from,
+		to = req.params.to,
+		passenger = parseInt(req.params.passenger),
+		depart_date = req.params.depart_date,
+		return_date = req.params.return_date,
+		seat_class = req.params.seat_class;
+
+	var single_query = {
+		'seat.seat_class': seat_class,
+		'seat.flight_time': depart_date,
+		'flight.origin': from,
+		'flight.destination': to
+	};
+
+	var return_query = {
+		'seat.seat_class': seat_class,
+		'seat.flight_time': return_date,
+		'flight.origin': to,
+		'flight.destination': from
+	};
+	var output = [];
+
+	Seat.searchFlight(passenger, single_query, function(error, result) {
+		if (error) {
+			console.log(error);
+		} else {
+			output.push(result);
+			Seat.searchFlight(passenger, return_query, function(error, result) {
+				if (error) {
+					console.log(error);
+				} else {
+					output.push(result);
+
+					// output here
+					res.json(output);
+				}
+			});
+		}
+	});
+});
+
+/* GET single trip query. */
+router.get('/search/:from/:to/:passenger/:depart_date/:seat_class', function(req, res) {
+	var from = req.params.from,
+		to = req.params.to,
+		passenger = parseInt(req.params.passenger),
+		depart_date = req.params.depart_date,
+		seat_class = req.params.seat_class;
+
+	var single_query = {
+		'seat.seat_class': seat_class,
+		'seat.flight_time': depart_date,
+		'flight.origin': from,
+		'flight.destination': to
+	};
+	var output = [];
+	Seat.searchFlight(passenger, single_query, function(error, result) {
+		if (error) {
+			console.log(error);
+		} else {
+			output.push(result);
+			// output here
+			res.json(output);
+		}
+	});
 });
 
 router.post('/seats', function(req, res) {

@@ -1,12 +1,12 @@
 <% include header %>
 <link rel="stylesheet" href="css/home.css">
-<div class="fullscreen background"  data-img-width="2560" data-img-height="1600">
+<div class="fullscreen background"  data-img-width="2560" data-img-height="1600"ng-app='search'>
 
 	<div class="content-a" ng-controller="SearchCtrl">
 		<div class="content-b">
 			<div class="large-8 large-centered column">
 				<p class="home-big-word">Hi, where is your next destination?</p>
-				<form ng-submit="search()">
+				<form ng-submit="submit()">
 					<div class="row">
 						<div class="small-3 columns">
 							<label  style="color:white;">From
@@ -35,9 +35,6 @@
 						
 					</div>
 					<div class="row">
-						
-					</div>
-					<div class="row">
 						<div class="large-3 columns" >
 							<label  style="color:white;">Number of passengers
 								<input type="text" ng-model="no_person" placeholder="Number of passengers..." />
@@ -60,7 +57,7 @@
 							</label>
 						</div>
 					</div>
-					<input class="button" id="seat_submit" value="Find" type="submit" />
+					<input class="button" value="Find" type="submit" />
 				</form>
 			</div>
 		</div>

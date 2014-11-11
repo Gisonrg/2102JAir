@@ -1,0 +1,101 @@
+<% include header %>
+<div ng-app='result' ng-controller="ResultCtrl">
+	<div class="large-3 column">
+	<fieldset class="white-bg">
+	<legend class="transparent-bg">Filter</legend>
+		<form ng-submit="search()" >
+			<div class="row">
+					<label>From
+						<input type="text" ng-model="from" placeholder="From..." />
+					</label>
+			</div>
+				<div class="row">
+					<label>To
+						<input type="text" ng-model="to" placeholder="Destination..." />
+					</label>
+				</div>
+				<div class="row">
+					<label>Depart
+						<datepicker  date-format="yyyy-MM-dd">
+							<input ng-model="depart" type="text" placeholder="Depart..." />
+						</datepicker>
+					</label>
+				</div>
+				<div class="row" >
+					<label ng-hide="trip_type=='single'">Return
+						<datepicker date-format="yyyy-MM-dd">
+							<input ng-model="return" type="text" placeholder="Return..." />
+						</datepicker>
+					</label>
+				</div>
+
+			<hr/>
+				<div class="row">
+					<label>Number of passengers
+						<input type="text" ng-model="no_person" placeholder="Number of passengers..." />
+					</label>
+				</div>
+				<div class="row">
+					<label>Trip Type</label>
+					<input type="radio"  ng-model="trip_type" value="single"><label for="search_type_single">Single</label>
+
+					<input type="radio" ng-model="trip_type" value="return"><label for="search_type_return">Return</label>
+				</div>
+
+				<div class="row">
+					<label>Class
+						<select ng-model="seat_class">
+							<option value="Economy">Economy</option>
+							<option value="Business">Business</option>
+							<option value="First">First</option>
+						</select>
+					</label>
+				</div>
+			<input class="button" id="seat_submit" value="Find" type="submit" />
+		</form>
+		</fieldset>
+	</div>
+
+	<div class="large-9 column">
+
+	<fieldset class="white-bg">
+	<legend class="transparent-bg">Select Depart Flight</legend>      
+        <table ng-table="tableSingle" class="table table-center" >
+        <tr ng-repeat="flight in $data">
+            <td data-title="'Flight No.'" class="table-center">{{flight.fno}}</td>
+            <td data-title="'Origin'" class="table-center">{{flight.origin}}</td>
+            <td data-title="'Destination'" class="table-center">{{flight.destination}}</td>
+            <td data-title="'Depart Time'" class="table-center">{{flight.depart_time}}</td>
+            <td data-title="'Arrive Time'" class="table-center">{{flight.arrive_time}}</td>
+            <td data-title="'Price'" class="table-center">{{flight.price}}</td>
+        </tr>
+        </table>
+	</fieldset>
+
+	<fieldset class="white-bg" ng-show="showReturn">
+	<legend class="transparent-bg">Select Return Flight</legend>     
+	<table ng-table="tableReturn" class="table table-center" >
+        <tr ng-repeat="flight in $data">
+            <td data-title="'Flight No.'" class="table-center">{{flight.fno}}</td>
+            <td data-title="'Origin'" class="table-center">{{flight.origin}}</td>
+            <td data-title="'Destination'" class="table-center">{{flight.destination}}</td>
+            <td data-title="'Depart Time'" class="table-center">{{flight.depart_time}}</td>
+            <td data-title="'Arrive Time'" class="table-center">{{flight.arrive_time}}</td>
+            <td data-title="'Price'" class="table-center">{{flight.price}}</td>
+        </tr>
+        </table>
+    </fieldset>
+
+	</div>
+
+        
+
+
+</div>
+
+<script type="text/javascript">
+
+</script>
+
+<script type="text/javascript" src="js/index/ng-table.js"></script>
+<% include footer %>
