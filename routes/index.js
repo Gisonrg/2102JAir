@@ -18,6 +18,18 @@ router.get('/', function(req, res) {
   });
 });
 
+/* GET paysuccess page. */
+router.get('/paysuccess', function(req, res) {
+  res.render('paysuccess', {
+    title: 'J-Air | Pay Success',
+    user : req.session.user,
+    flight : req.session.flight,
+    returnFlight : req.session.returnFlight,
+    success: req.flash('success').toString(),
+    error: req.flash('error').toString()
+  });
+});
+
 /* GET search page. */
 router.get('/search', function(req, res) {
   res.render('search', { 
