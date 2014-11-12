@@ -43,14 +43,18 @@ router.get('/result', function(req, res) {
 
 router.post('/result', checkLogin);
 router.post('/result', function(req, res) {
+  req.session.price = 0;
   if (req.body.depart[0].fno) {
     req.session.depart = req.body.depart[0];
     req.session.depart.seatClass = req.body.class;
+    req.session.price += req.session.depart.price * req.session.depart.passengers;
   }
   if (req.body.return[0].fno) {
     req.session.return = req.body.return[0];
     req.session.return.seatClass = req.body.class;
+    req.session.price += req.session.return.price * req.session.return.passengers;
   }
+  console.log(req.session.price);
   res.send("success");
 });
 
@@ -59,28 +63,131 @@ router.get('/checkout', checkLogin);
 router.get('/checkout', function(req, res) {
   var seatClass = req.session.depart.seatClass;
   console.log("session:" + seatClass);
+  var seats = [];
   Seat.getBookingSeat({
       "fno": req.session.depart.fno,
       "flight_time": req.session.depart.flight_time,
       "seatClass": seatClass
     }, function(err, data) {
-    console.log(data);
-    res.render('checkOut', { 
-        title: 'J-Air | Check Out Now',
-        user : req.session.user,
-        success: req.flash('success').toString(),
-        error: req.flash('error').toString(),
-        depart_flight: req.session.depart,
-        return_flight: req.session.return,
-        seats: data
-      });
+      seats.push(data);
+      // check if there is any return flight
+      if (req.session.return) {
+        Seat.getBookingSeat({
+            "fno": req.session.depart.fno,
+            "flight_time": req.session.depart.flight_time,
+            "seatClass": seatClass
+          }, function(err, data) {
+              seats.push(data);
+              res.render('checkOut', { 
+                  title: 'J-Air | Check Out Now',
+                  user : req.session.user,
+                  success: req.flash('success').toString(),
+                  error: req.flash('error').toString(),
+                  depart_flight: req.session.depart,
+                  return_flight: req.session.return,
+                  seats: seats
+              });
+        })
+      } else {
+        res.render('checkOut', { 
+            title: 'J-Air | Check Out Now',
+            user : req.session.user,
+            success: req.flash('success').toString(),
+            error: req.flash('error').toString(),
+            depart_flight: req.session.depart,
+            return_flight: req.session.return,
+            seats: seats
+        });
+      }
   });
 });
 
 router.post('/checkout', checkLogin);
 router.post('/checkout', function(req, res) {
   // send session from checkOut here.
-  res.send("success");
+  var data = req.body.passengers;
+  var passengers = JSON.parse(data);
+  for (var i = 0; i < passengers.length; i++) {
+    var passenger = passengers[i];
+    User.get(passenger.email, function(error, data) {
+      if (data.length != 0) {
+        console.log(JSON.stringify(passenger));
+        var user = data[0];
+        // user already exists, just insert
+        var bookRef = Booking.generateREF();
+        var seat = passenger.singleSeat;
+        var fno = req.session.depart.fno;
+        var flight_time = req.session.depart.flight_time;
+        var pid = user.pid;
+        var booking = new Booking(bookRef, seat, fno, flight_time, pid);
+        booking.add(function(err) {
+          if (err) {
+            console.log("error");
+          }
+        });
+        if (passenger.returnSeat) {
+          var bookRef = Booking.generateREF();
+          var seat = passenger.returnSeat;
+          var fno = req.session.return.fno;
+          var flight_time = req.session.return.flight_time;
+          var pid = user.pid;
+          // return ticket
+          var booking = new Booking(bookRef, seat, fno, flight_time, pid);
+          booking.add(function(err) {
+            if (err) {
+              console.log("error");
+            }
+          });
+        }
+      } else {
+        console.log("Creating first: "+JSON.stringify(passenger));
+        // new user, create a user first
+        var md5 = crypto.createHash('md5');
+        var password = md5.update(passenger.passport).digest('hex');
+        var newUser = new User(passenger.name, passenger.passport, passenger.email, password, passenger.contact);
+        newUser.add(function(err, user) {
+          if (err) {
+            console.log(err);
+          }
+        });
+
+        // after adding this user, treat it as the previous case.
+        User.get(passenger.email, function(error, data) {
+          var user = data[0];
+          // user already exists, just insert
+          var bookRef = Booking.generateREF();
+          var seat = passenger.singleSeat;
+          var fno = req.session.depart.fno;
+          var flight_time = req.session.depart.flight_time;
+          var pid = user.pid;
+          var booking = new Booking(bookRef, seat, fno, flight_time, pid);
+          booking.add(function(err) {
+            if (err) {
+              console.log("error");
+            }
+          });
+          if (passenger.returnSeat) {
+            var bookRef = Booking.generateREF();
+            var seat = passenger.returnSeat;
+            var fno = req.session.return.fno;
+            var flight_time = req.session.return.flight_time;
+            var pid = user.pid;
+            // return ticket
+            var booking = new Booking(bookRef, seat, fno, flight_time, pid);
+            booking.add(function(err) {
+              if (err) {
+                console.log("error");
+              }
+
+            });
+          }
+        });
+      }
+    });
+  }
+  res.json({
+    "success": "ok"
+  });
 });
 
 /* GET paysuccess page. */
@@ -91,6 +198,7 @@ router.get('/paysuccess', function(req, res) {
     user : req.session.user,
     depart_flight: req.session.depart,
     return_flight: req.session.return,
+    totalPrice : req.session.price,
     success: req.flash('success').toString(),
     error: req.flash('error').toString()
   });
@@ -229,7 +337,6 @@ router.post('/profile', function(req, res) {
   });
 });
 
-/* GET search page. */
 router.get('/booking', checkLogin);
 router.get('/booking', function(req, res) {
   Booking.manage(req.session.user.email, function(err, bookings) {
@@ -250,7 +357,7 @@ router.get('/booking', function(req, res) {
 function checkLogin(req, res, next) {
   if (!req.session.user) {
     req.flash('error', 'Please login first');
-    res.redirect('/login');
+    return res.redirect('/login');
   }
   next();
 }
@@ -258,7 +365,7 @@ function checkLogin(req, res, next) {
 function checkNotLogin(req, res, next) {
   if (req.session.user) {
     req.flash('error', 'You have already logged in');
-    res.redirect('back');
+    return res.redirect('back');
   }
   next();
 }

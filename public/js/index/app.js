@@ -1,24 +1,37 @@
 angular.module('search', ['720kb.datepicker','ngCookies'])
 	.controller('SearchCtrl', 
 		function($scope, $cookieStore) {
+			$scope.depart = "2014-11-13";
+			$scope.return = "2014-11-14";
 			$scope.no_person = 1;
 			$scope.trip_type = 'return';
 			$scope.seat_class = 'Economy';
+
 			$scope.submit = function() {
-
-
+				var depart_date = new Date($scope.depart);
+				var return_date = new Date($scope.return);
+				var day_diff = return_date - depart_date;
 		        if (!$scope.from || !$scope.to) {
 		          alert("Please fill in the airport name!");
 		          return;
 		        } 
-		        if (!$scope.return && $scope.trip_type =='return') {
-		        	alert("Please fill in the return date!");
-		        	return;
+
+		        if ($scope.trip_type =='return' ) {
+		        	if (day_diff < 0) {
+						alert("Depart date cannot be later than return date!");
+						return;
+					}
+					if (!$scope.return ) {
+						alert("Please fill in the correct return date!");
+		        		return;
+					}
 		        }
+
 		        if (!$scope.depart) {
 		        	alert("Please fill in the depart date!");
 		        	return;
 		        }
+		        
 		        // check finished
 		        var form_data = {
 		        	"from"   : $scope.from,
@@ -144,14 +157,25 @@ angular.module('result', ['720kb.datepicker','ngTable','ngCookies'])
 
 
 			$scope.search = function() {
+		        var depart_date = new Date($scope.depart);
+				var return_date = new Date($scope.return);
+				var day_diff = return_date - depart_date;
 		        if (!$scope.from || !$scope.to) {
 		          alert("Please fill in the airport name!");
 		          return;
 		        } 
-		        if (!$scope.return && $scope.trip_type =='return') {
-		        	alert("Please fill in the return date!");
-		        	return;
+
+		        if ($scope.trip_type =='return' ) {
+		        	if (day_diff < 0) {
+						alert("Depart date cannot be later than return date!");
+						return;
+					}
+					if (!$scope.return ) {
+						alert("Please fill in the correct return date!");
+		        		return;
+					}
 		        }
+
 		        if (!$scope.depart) {
 		        	alert("Please fill in the depart date!");
 		        	return;

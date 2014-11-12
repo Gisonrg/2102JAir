@@ -12,6 +12,19 @@ function Booking(book_ref, seat_id, flight_no, flight_time, passenger_id) {
 	this.passenger_id = passenger_id;
 }
 
+Booking.generateREF = function() {
+	function makeid() {
+		var text = "";
+		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+		for (var i = 0; i < 5; i++)
+			text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+		return text;
+	}
+	return makeid();
+}
+
 Booking.getAll = function(callback) {
 	pool.getConnection(function(err, connection) {
     // Use the connection
@@ -102,9 +115,8 @@ Booking.prototype.add = function(callback) {
 		flight_time : this.flight_time,
 		passenger_id : this.passenger_id
 	};
-
 	pool.getConnection(function(err, connection) {
-		connection.query("INSERT INTO reservation SET ? `book_time` = CURRENT_TIMESTAMP", booking, function(err, rows, fields) {
+		connection.query("INSERT INTO reservation SET ?", booking, function(err, rows, fields) {
 			if (err) {
 				console.log(err);
 				return callback(err.code, null);

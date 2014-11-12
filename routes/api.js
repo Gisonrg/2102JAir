@@ -334,6 +334,19 @@ router.get('/seats/:flight_no/:flight_time', function(req, res) {
 		});
 });
 
+router.get('/seats/:flight_no/:flight_time/:seat_class', function(req, res) {
+	Seat.getBookingSeat( {"fno": req.params.flight_no, "flight_time":req.params.flight_time, "seatClass":req.params.seat_class},function(error, data) {
+			if (error) {
+				res.json({
+					"status": "error",
+					"error": error.code
+				});
+			} else {
+				res.json(data);
+			}
+		});
+});
+
 /* GET return trip query. */
 router.get('/search/:from/:to/:passenger/:depart_date/:return_date/:seat_class', function(req, res) {
 	var from = req.params.from,

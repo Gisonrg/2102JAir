@@ -72,7 +72,7 @@ Seat.getBookingSeat = function(querySeat, callback){
   console.log(flight_time);
   console.log(seatClass);
   pool.getConnection(function(err, connection){
-    connection.query('SELECT DISTINCT sid FROM seat s, flight f WHERE s.flight_no = ? AND s.seat_class = ? AND s.flight_time = ? AND s.sid NOT IN (select seat_id from reservation, seat where reservation.flight_no = seat.flight_no AND reservation.flight_time = seat.flight_time)', 
+    connection.query('SELECT DISTINCT sid FROM seat s WHERE s.flight_no = ? AND s.seat_class = ? AND s.flight_time = ? AND s.sid NOT IN (select seat_id from reservation where reservation.flight_no = s.flight_no AND reservation.flight_time = s.flight_time)', 
     [fno, seatClass, flight_time], function(err, rows, fields){
       if (err) {
         return callback(err.code, null);

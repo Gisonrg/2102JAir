@@ -37,7 +37,7 @@
 						<td class="table-center"><%= return_flight.fno %></td>
 						<td class="table-center"><%= return_flight.flight_time + " " + return_flight.depart_time.substring(0, 5) %></td>
 						<td class="table-center"><%= return_flight.flight_time + " " + return_flight.arrive_time.substring(0, 5) %></td>
-						<td class="table-center"><%= depart_flight.origin %></td>
+						<td class="table-center"><%= return_flight.origin %></td>
 						<td class="table-center"><%= return_flight.destination %></td>
 						<td class="table-center"><%= return_flight.seatClass %></td>
 						<td class="table-center"><%= return_flight.price %></td>
@@ -59,34 +59,49 @@
 							<th style="text-align:center;">Passport</th>
 							<th style="text-align:center;">Email</th>
 							<th style="text-align:center;">Contact</th>
-							<th style="text-align:center;">Seat</th>
+							<th style="text-align:center;">Depart Seat</th>
+							<% if (seats.length==2) { %>
+							<th style="text-align:center;">Return Seat</th>
+							<% } %>
 						</tr>
 					</thead>
 					<tbody id="data-entry">
 					<% if (depart_flight){
 						for(var i=0;i<depart_flight.passengers;i++) {%>
 						<tr>
-							<td class="table-center"><input type="text"/></td>
-							<td class="table-center"><input type="text"/></td>
-							<td class="table-center"><input type="text"/></td>
-							<td class="table-center"><input type="text"/></td>
+							<td class="table-center"><input type="text" class="bookName" /></td>
+							<td class="table-center"><input type="text" class="bookPassport" /></td>
+							<td class="table-center"><input type="text" class="bookEmail" /></td>
+							<td class="table-center"><input type="text" class="bookContact" /></td>
 							<td class="table-center">
-								<select class="select-seat">
-								<% seats.forEach(function (seat, index) { %>
+								<select class="single-seat">
+								<% 	var singleSeat = seats[0];
+
+								singleSeat.forEach(function (seat, index) { %>
 									<option value="<%= seat.sid %>"><%= seat.sid %></option>
 								<% }) %>
 								</select>
 							</td>
+							<% if (seats.length==2) {
+								var returnSeat = seats[1]; %>
+							<td class="table-center">
+								<select class="return-seat">
+								<% 	returnSeat.forEach(function (seat, index) { %>
+									<option value="<%= seat.sid %>"><%= seat.sid %></option>
+								<% }) %>
+								</select>
+							</td>
+							<% }%>
 						</tr>
 					<% }
 					} %>
 					</tbody>
 				</table>
+				<spanstyle="margin: 2%;float:right"><h4>Total:</h4>$<%= totalPrice  %></span>
 			</fieldset>
 
 			<span style="margin: 2%;float:right"><button class="alert">Cancel</button></span>
 			<span style="margin: 2%; float:right"><button id="payNow">Pay Now!</button></span>
-			<spanstyle="margin: 2%;float:right"><h4>Total:</h4>$<%= totalPrice  %></span>
 		</div>
 	</div>
 </div>

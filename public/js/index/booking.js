@@ -3,12 +3,12 @@ function populateEditForm(booking) {
   $.getJSON("/api/booking/"+ booking, function(data) {
     var booking = data[0];
  
-    $.getJSON("/api/seats/"+booking.flight_no + "/" + convertFlightTime(new Date(booking.flight_time)), function(data) {
+    $.getJSON("/api/seats/"+booking.flight_no + "/" + convertFlightTime(new Date(booking.flight_time)) + "/" + booking.seat_class, function(data) {
       $("#edit-seat").html('');
       for(var i in data){
         var seat = data[i];
         var sid = seat.sid,
-        seat_class = seat.seat_class;
+        seat_class = booking.seat_class;
         console.log(seat);
         $("#edit-seat").append('<option' + ' value="' + sid + '">' + sid + ' (' + seat_class +  ')' +'</option>');
       }
