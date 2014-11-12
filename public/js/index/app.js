@@ -1,4 +1,4 @@
-angular.module('search', ['720kb.datepicker','ngCookies'])
+angular.module('search', ['720kb.datepicker','ngCookies','siyfion.sfTypeahead'])
 	.controller('SearchCtrl', 
 		function($scope, $cookieStore) {
 			$scope.depart = "2014-11-13";
@@ -6,6 +6,155 @@ angular.module('search', ['720kb.datepicker','ngCookies'])
 			$scope.no_person = 1;
 			$scope.trip_type = 'return';
 			$scope.seat_class = 'Economy';
+
+			/*******
+			Configure typeahead.js
+			*******/
+			// Instantiate the bloodhound suggestion engine
+			  var airports = new Bloodhound({
+			    datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.city); },
+			    queryTokenizer: Bloodhound.tokenizers.whitespace,
+			    local: [
+				    {
+				        "code": "BKK",
+				        "name": "Bangkok International Airport",
+				        "city": "Bangkok",
+				        "country": "Thailand"
+				    },
+				    {
+				        "code": "CAI",
+				        "name": "Cairo International",
+				        "city": "Cairo",
+				        "country": "Egypt"
+				    },
+				    {
+				        "code": "CAN",
+				        "name": "Guangzhou Baiyun International Airport",
+				        "city": "Guangzhou",
+				        "country": "China"
+				    },
+				    {
+				        "code": "CDG",
+				        "name": "Charles de Gaulle Airport",
+				        "city": "Paris",
+				        "country": "France"
+				    },
+				    {
+				        "code": "CSX",
+				        "name": "Changsha Huang Hua International Airport",
+				        "city": "Changsha",
+				        "country": "China"
+				    },
+				    {
+				        "code": "DEL",
+				        "name": "Indira Gandhi International Airport",
+				        "city": "Delhi",
+				        "country": "India"
+				    },
+				    {
+				        "code": "DME",
+				        "name": "Moscow Domodedovo Airport",
+				        "city": "Moscow",
+				        "country": "Russia"
+				    },
+				    {
+				        "code": "DXB",
+				        "name": "Dubai International Airport",
+				        "city": "Dubai",
+				        "country": "United Arab Emirates"
+				    },
+				    {
+				        "code": "GRU",
+				        "name": "São Paulo-Guarulhos International Airport",
+				        "city": "Saint Paul",
+				        "country": "Brazil"
+				    },
+				    {
+				        "code": "HKG",
+				        "name": "Hong Kong International Airport",
+				        "city": "Hong Kong",
+				        "country": "Hong Kong"
+				    },
+				    {
+				        "code": "JFK",
+				        "name": "John F Kennedy International Airport",
+				        "city": "New York",
+				        "country": "United States"
+				    },
+				    {
+				        "code": "KUL",
+				        "name": "Kuala Lumpur International Airport",
+				        "city": "Kuala Lumpur",
+				        "country": "Malaysia"
+				    },
+				    {
+				        "code": "LAX",
+				        "name": "Los Angeles International Airport",
+				        "city": "Los Angeles",
+				        "country": "United States"
+				    },
+				    {
+				        "code": "LHR",
+				        "name": "London Heathrow Airport",
+				        "city": "London",
+				        "country": "United Kingdom"
+				    },
+				    {
+				        "code": "NRT",
+				        "name": "Narita International",
+				        "city": "Tokyo",
+				        "country": "Japan"
+				    },
+				    {
+				        "code": "PEK",
+				        "name": "Beijing Capital International Airport",
+				        "city": "Beijing",
+				        "country": "China"
+				    },
+				    {
+				        "code": "SFO",
+				        "name": "San Francisco International",
+				        "city": "San Francisco",
+				        "country": "United States"
+				    },
+				    {
+				        "code": "SIN",
+				        "name": "Singapore Changi International",
+				        "city": "Singapore",
+				        "country": "Singapore"
+				    },
+				    {
+				        "code": "SYD",
+				        "name": "Sydney Kingsford Smith International",
+				        "city": "Sydney",
+				        "country": "Australia"
+				    },
+				    {
+				        "code": "XIY",
+				        "name": "Xi'an Xianyang International Airport",
+				        "city": "Xi'an",
+				        "country": "China"
+				    }]
+			  });
+
+			  // initialize the bloodhound suggestion engine
+			  airports.initialize();
+
+			  // Typeahead options object
+			  $scope.exampleOptions = {
+			    highlight: true
+			  };
+
+			  // Single dataset example
+			  $scope.exampleData = {
+			    displayKey: 'code',
+			    source: airports.ttAdapter(),
+			    templates: {
+			        suggestion: function (airport) {
+			            return '<p>' + airport.city + "-"+ airport.code + '</p>';
+			        }
+			    }
+			  };
 
 			$scope.submit = function() {
 				var depart_date = new Date($scope.depart);
@@ -34,8 +183,8 @@ angular.module('search', ['720kb.datepicker','ngCookies'])
 		        
 		        // check finished
 		        var form_data = {
-		        	"from"   : $scope.from,
-		        	"to"     : $scope.to,
+		        	"from"   : $scope.from.code,
+		        	"to"     : $scope.to.code,
 		        	"depart" : $scope.depart,
 		        	"return" : $scope.return,
 		        	"no_person" : $scope.no_person,
