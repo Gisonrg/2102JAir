@@ -5,13 +5,13 @@
 	<legend class="transparent-bg">Filter</legend>
 		<form ng-submit="search()" >
 			<div class="row">
-					<label>From
-						<input type="text" ng-model="from" placeholder="From..." />
+					<label>From<br/>
+						<input type="text" class="sfTypeahead" options="exampleOptions" datasets="exampleData" ng-model="from" placeholder="Destination..." />
 					</label>
 			</div>
 				<div class="row">
-					<label>To
-						<input type="text" ng-model="to" placeholder="Destination..." />
+					<label>To<br/>
+						<input type="text" class="sfTypeahead" options="exampleOptions" datasets="exampleData" ng-model="to" placeholder="Destination..." />
 					</label>
 				</div>
 				<div class="row">
@@ -32,7 +32,12 @@
 			<hr/>
 				<div class="row">
 					<label>Number of passengers
-						<input type="text" ng-model="no_person" placeholder="Number of passengers..." />
+						<select ng-model="no_person">
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+						</select>
 					</label>
 				</div>
 				<div class="row">

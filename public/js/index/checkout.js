@@ -18,6 +18,7 @@ function populateSeats() {
 function collectPassenger() {
   var passengers = new Array();
   $('#data-entry tr').each(function() {
+
     var name = $(this).find(".bookName").val();
     var passport = $(this).find(".bookPassport").val();
     var email = $(this).find(".bookEmail").val();
@@ -44,16 +45,50 @@ function collectPassenger() {
     contentType: 'application/json',
     data: passengers,
     success: function(data){
-      console.log(data);
-      window.location.replace("/paysuccess");
+      if (data.success == "ok") {
+        window.location.replace("/paysuccess");  
+      }
+    },
+    error: function(error){
+      alert("Error! Please try again!");
     }
   });
 }
 
-
 $(document).ready(function() {
-  $('#payNow').click(function(){
-    collectPassenger();
-    // window.location.replace("/paysuccess");
+  $('#cancel').click(function() {
+    window.location.replace("/result");  
+  });
+  $('#payNow').click(function() {
+    var singleMap = {};
+    var returnMap = {};
+    var flag = false;
+    $('#data-entry tr').each(function() {
+      var singleSeat = $(this).find(".single-seat").val();
+      var returnSeat = $(this).find(".return-seat").val();
+      // if some seat is already selected. Error
+      if (singleMap[singleSeat] || returnMap[returnSeat]) {
+        alert("Please don't select repeated seat!");
+        flag = true;
+        return false;
+      }
+      // fill in the dictionary
+      singleMap[singleSeat] = singleSeat;
+      returnMap[returnSeat] = returnSeat;
+
+      var name = $(this).find(".bookName").val().trim();
+      var passport = $(this).find(".bookPassport").val().trim();
+      var email = $(this).find(".bookEmail").val().trim();
+      var contact = $(this).find(".bookContact").val().trim();
+      // should also check error here
+      if (!name || !passport || !email || !contact) {
+        alert("Please enter valid information!");
+        flag = true;
+        return false;
+      }
+    });
+    if (!flag) {
+      collectPassenger();
+    }
   });
 });

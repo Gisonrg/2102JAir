@@ -1,6 +1,6 @@
 
 
-var img_no = "b"+Math.floor((Math.random() * 5) + 1)+".jpg";
+var img_no = "b"+Math.floor((Math.random() * 8) + 1)+".jpg";
 var imgURL = "../../img/background/"+img_no;
 $('.fullscreen').css('background', 'url(' + imgURL + ') no-repeat center');
 

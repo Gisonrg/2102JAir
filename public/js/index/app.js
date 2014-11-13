@@ -1,3 +1,177 @@
+angular.module('home', ['ngCookies','siyfion.sfTypeahead'])
+	.controller('HomeCtrl', 
+		function($scope, $cookieStore) {
+			/*******
+			Configure typeahead.js
+			*******/
+			// Instantiate the bloodhound suggestion engine
+			  var airports = new Bloodhound({
+			    datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.city); },
+			    queryTokenizer: Bloodhound.tokenizers.whitespace,
+			    local: [
+				    {
+				        "code": "BKK",
+				        "name": "Bangkok International Airport",
+				        "city": "Bangkok",
+				        "country": "Thailand"
+				    },
+				    {
+				        "code": "CAI",
+				        "name": "Cairo International",
+				        "city": "Cairo",
+				        "country": "Egypt"
+				    },
+				    {
+				        "code": "CAN",
+				        "name": "Guangzhou Baiyun International Airport",
+				        "city": "Guangzhou",
+				        "country": "China"
+				    },
+				    {
+				        "code": "CDG",
+				        "name": "Charles de Gaulle Airport",
+				        "city": "Paris",
+				        "country": "France"
+				    },
+				    {
+				        "code": "CSX",
+				        "name": "Changsha Huang Hua International Airport",
+				        "city": "Changsha",
+				        "country": "China"
+				    },
+				    {
+				        "code": "DEL",
+				        "name": "Indira Gandhi International Airport",
+				        "city": "Delhi",
+				        "country": "India"
+				    },
+				    {
+				        "code": "DME",
+				        "name": "Moscow Domodedovo Airport",
+				        "city": "Moscow",
+				        "country": "Russia"
+				    },
+				    {
+				        "code": "DXB",
+				        "name": "Dubai International Airport",
+				        "city": "Dubai",
+				        "country": "United Arab Emirates"
+				    },
+				    {
+				        "code": "GRU",
+				        "name": "São Paulo-Guarulhos International Airport",
+				        "city": "Saint Paul",
+				        "country": "Brazil"
+				    },
+				    {
+				        "code": "HKG",
+				        "name": "Hong Kong International Airport",
+				        "city": "Hong Kong",
+				        "country": "Hong Kong"
+				    },
+				    {
+				        "code": "JFK",
+				        "name": "John F Kennedy International Airport",
+				        "city": "New York",
+				        "country": "United States"
+				    },
+				    {
+				        "code": "KUL",
+				        "name": "Kuala Lumpur International Airport",
+				        "city": "Kuala Lumpur",
+				        "country": "Malaysia"
+				    },
+				    {
+				        "code": "LAX",
+				        "name": "Los Angeles International Airport",
+				        "city": "Los Angeles",
+				        "country": "United States"
+				    },
+				    {
+				        "code": "LHR",
+				        "name": "London Heathrow Airport",
+				        "city": "London",
+				        "country": "United Kingdom"
+				    },
+				    {
+				        "code": "NRT",
+				        "name": "Narita International",
+				        "city": "Tokyo",
+				        "country": "Japan"
+				    },
+				    {
+				        "code": "PEK",
+				        "name": "Beijing Capital International Airport",
+				        "city": "Beijing",
+				        "country": "China"
+				    },
+				    {
+				        "code": "SFO",
+				        "name": "San Francisco International",
+				        "city": "San Francisco",
+				        "country": "United States"
+				    },
+				    {
+				        "code": "SIN",
+				        "name": "Singapore Changi International",
+				        "city": "Singapore",
+				        "country": "Singapore"
+				    },
+				    {
+				        "code": "SYD",
+				        "name": "Sydney Kingsford Smith International",
+				        "city": "Sydney",
+				        "country": "Australia"
+				    },
+				    {
+				        "code": "XIY",
+				        "name": "Xi'an Xianyang International Airport",
+				        "city": "Xi'an",
+				        "country": "China"
+				    }]
+			  });
+
+			  // initialize the bloodhound suggestion engine
+			  airports.initialize();
+
+			  // Typeahead options object
+			  $scope.exampleOptions = {
+			    highlight: true
+			  };
+
+			  // Single dataset example
+			  $scope.exampleData = {
+			    displayKey: 'code',
+			    source: airports.ttAdapter(),
+			    templates: {
+			        suggestion: function (airport) {
+			            return '<p>' + airport.city + "-"+ airport.code + '</p>';
+			        }
+			    }
+			  };
+
+			$scope.submit = function() {
+		        // check finished
+		        $scope.depart = "2014-11-13";
+				$scope.return = "2014-11-14";
+				$scope.no_person = 1;
+				$scope.trip_type = 'return';
+				$scope.seat_class = 'Economy';
+
+		        var form_data = {
+		        	"from"   : "SIN",
+		        	"to"     : $scope.to.code,
+		        	"depart" : $scope.depart,
+		        	"return" : $scope.return,
+		        	"no_person" : $scope.no_person,
+		        	"trip_type" : $scope.trip_type,
+		        	"seat_class": $scope.seat_class
+		        };
+		       	$cookieStore.put('searchResult',form_data);
+		        window.location.replace("/result");
+			}
+	});
+
 angular.module('search', ['720kb.datepicker','ngCookies','siyfion.sfTypeahead'])
 	.controller('SearchCtrl', 
 		function($scope, $cookieStore) {
@@ -165,7 +339,22 @@ angular.module('search', ['720kb.datepicker','ngCookies','siyfion.sfTypeahead'])
 		          return;
 		        } 
 
+		        var today = new Date();
+				var dd = today.getDate();
+				var mm = today.getMonth()+1; //January is 0!
+				var yyyy = today.getFullYear();
+				var check_date = new Date(yyyy+"/"+mm+"/"+dd);
+				if (depart_date < check_date) {
+					alert("You cannot select a date before today!");
+					return;
+				}
+
+
 		        if ($scope.trip_type =='return' ) {
+		        	if (return_date < check_date) {
+					alert("You cannot select a date before today!");
+						return;
+					}
 		        	if (day_diff < 0) {
 						alert("Depart date cannot be later than return date!");
 						return;
@@ -197,9 +386,157 @@ angular.module('search', ['720kb.datepicker','ngCookies','siyfion.sfTypeahead'])
 	})
 
 
-angular.module('result', ['720kb.datepicker','ngTable','ngCookies'])
+angular.module('result', ['720kb.datepicker','ngTable','ngCookies','siyfion.sfTypeahead'])
 	.controller('ResultCtrl', 
 		function($scope, $cookieStore, ngTableParams, $http) {
+			/*******
+			Configure typeahead.js
+			*******/
+			// Instantiate the bloodhound suggestion engine
+			  var airports = new Bloodhound({
+			    datumTokenizer: function(d) { return Bloodhound.tokenizers.whitespace(d.city); },
+			    queryTokenizer: Bloodhound.tokenizers.whitespace,
+			    local: [
+				    {
+				        "code": "BKK",
+				        "name": "Bangkok International Airport",
+				        "city": "Bangkok",
+				        "country": "Thailand"
+				    },
+				    {
+				        "code": "CAI",
+				        "name": "Cairo International",
+				        "city": "Cairo",
+				        "country": "Egypt"
+				    },
+				    {
+				        "code": "CAN",
+				        "name": "Guangzhou Baiyun International Airport",
+				        "city": "Guangzhou",
+				        "country": "China"
+				    },
+				    {
+				        "code": "CDG",
+				        "name": "Charles de Gaulle Airport",
+				        "city": "Paris",
+				        "country": "France"
+				    },
+				    {
+				        "code": "CSX",
+				        "name": "Changsha Huang Hua International Airport",
+				        "city": "Changsha",
+				        "country": "China"
+				    },
+				    {
+				        "code": "DEL",
+				        "name": "Indira Gandhi International Airport",
+				        "city": "Delhi",
+				        "country": "India"
+				    },
+				    {
+				        "code": "DME",
+				        "name": "Moscow Domodedovo Airport",
+				        "city": "Moscow",
+				        "country": "Russia"
+				    },
+				    {
+				        "code": "DXB",
+				        "name": "Dubai International Airport",
+				        "city": "Dubai",
+				        "country": "United Arab Emirates"
+				    },
+				    {
+				        "code": "GRU",
+				        "name": "São Paulo-Guarulhos International Airport",
+				        "city": "Saint Paul",
+				        "country": "Brazil"
+				    },
+				    {
+				        "code": "HKG",
+				        "name": "Hong Kong International Airport",
+				        "city": "Hong Kong",
+				        "country": "Hong Kong"
+				    },
+				    {
+				        "code": "JFK",
+				        "name": "John F Kennedy International Airport",
+				        "city": "New York",
+				        "country": "United States"
+				    },
+				    {
+				        "code": "KUL",
+				        "name": "Kuala Lumpur International Airport",
+				        "city": "Kuala Lumpur",
+				        "country": "Malaysia"
+				    },
+				    {
+				        "code": "LAX",
+				        "name": "Los Angeles International Airport",
+				        "city": "Los Angeles",
+				        "country": "United States"
+				    },
+				    {
+				        "code": "LHR",
+				        "name": "London Heathrow Airport",
+				        "city": "London",
+				        "country": "United Kingdom"
+				    },
+				    {
+				        "code": "NRT",
+				        "name": "Narita International",
+				        "city": "Tokyo",
+				        "country": "Japan"
+				    },
+				    {
+				        "code": "PEK",
+				        "name": "Beijing Capital International Airport",
+				        "city": "Beijing",
+				        "country": "China"
+				    },
+				    {
+				        "code": "SFO",
+				        "name": "San Francisco International",
+				        "city": "San Francisco",
+				        "country": "United States"
+				    },
+				    {
+				        "code": "SIN",
+				        "name": "Singapore Changi International",
+				        "city": "Singapore",
+				        "country": "Singapore"
+				    },
+				    {
+				        "code": "SYD",
+				        "name": "Sydney Kingsford Smith International",
+				        "city": "Sydney",
+				        "country": "Australia"
+				    },
+				    {
+				        "code": "XIY",
+				        "name": "Xi'an Xianyang International Airport",
+				        "city": "Xi'an",
+				        "country": "China"
+				    }]
+			  });
+
+			  // initialize the bloodhound suggestion engine
+			  airports.initialize();
+
+			  // Typeahead options object
+			  $scope.exampleOptions = {
+			    highlight: true
+			  };
+
+			  // Single dataset example
+			  $scope.exampleData = {
+			    displayKey: 'code',
+			    source: airports.ttAdapter(),
+			    templates: {
+			        suggestion: function (airport) {
+			            return '<p>' + airport.city + "-"+ airport.code + '</p>';
+			        }
+			    }
+			  };
 			$scope.search_data;
 
 			$scope.showSingle = false;
@@ -302,19 +639,34 @@ angular.module('result', ['720kb.datepicker','ngTable','ngCookies'])
 			}
 
 			$scope.trip_type = 'return';
-			$scope.seat_class = 'Economy';
+			// $scope.seat_class = 'Economy';
 
 
 			$scope.search = function() {
 		        var depart_date = new Date($scope.depart);
 				var return_date = new Date($scope.return);
 				var day_diff = return_date - depart_date;
+
+				var today = new Date();
+				var dd = today.getDate();
+				var mm = today.getMonth()+1; //January is 0!
+				var yyyy = today.getFullYear();
+				var check_date = new Date(yyyy+"/"+mm+"/"+dd);
+				if (depart_date < check_date) {
+					alert("You cannot select a date before today!");
+					return;
+				}
+
 		        if (!$scope.from || !$scope.to) {
 		          alert("Please fill in the airport name!");
 		          return;
 		        } 
 
 		        if ($scope.trip_type =='return' ) {
+		        	if (return_date < check_date) {
+						alert("You cannot select a date before today!");
+						return;
+					}	 
 		        	if (day_diff < 0) {
 						alert("Depart date cannot be later than return date!");
 						return;
@@ -331,8 +683,8 @@ angular.module('result', ['720kb.datepicker','ngTable','ngCookies'])
 		        }
 		        // check finished
 		        var form_data = {
-		        	"from"   : $scope.from,
-		        	"to"     : $scope.to,
+		        	"from"   : $scope.from.code,
+		        	"to"     : $scope.to.code,
 		        	"depart" : $scope.depart,
 		        	"return" : $scope.return,
 		        	"no_person" : $scope.no_person,

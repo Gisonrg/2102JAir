@@ -1,24 +1,22 @@
 <% include header %>
 <link rel="stylesheet" href="css/home.css">
-<div class="fullscreen background"  data-img-width="2560" data-img-height="1600">
-<% include common/alert-fix %>
-	<div class="content-a">
+<div class="fullscreen background"  data-img-width="2560" data-img-height="1600" ng-app='home'>
+	<% include common/alert-fix %>
+	<div class="content-a" ng-controller="HomeCtrl">
 		<div class="content-b">
-			<form>
-
+			<form ng-submit="submit()">
 				<div class="row">
 					<div class="large-12 columns">
-					<label class="home-big-word">Wherever you go, go with J-Air.</label>
+						<label class="home-big-word">Wherever you go, go with J-Air.</label>
 						<div class="row collapse">
 							<div class="small-8 small-offset-1 columns">
-
-									<input type="text" placeholder="Where is your next destination?" />
+								<input type="text" class="sfTypeahead" options="exampleOptions" datasets="exampleData" ng-model="to" placeholder="Where is your next destination?" />
 							</div>
+
 							<div class="small-2 end columns">
-								<a href="#" class="button postfix">Go</a>
+								<input class="button postfix" value="Go" type="submit" />
 							</div>
 						</div>
-						
 					</div>
 				</div>
 			</form>

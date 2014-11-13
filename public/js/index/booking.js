@@ -14,6 +14,7 @@ function populateEditForm(booking) {
       }
     });
 
+
   });
 
   $('#edit-cancel').click(function(){
@@ -74,7 +75,7 @@ function convertFlightTime(date) {
 }
 
 $(document).ready(function() {
-
+  $("#bookingTable").tablesorter(); 
 });
 
 

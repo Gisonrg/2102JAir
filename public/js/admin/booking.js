@@ -73,6 +73,7 @@ function convertFlightTime(date) {
 }
 
 $(document).ready(function() {
+  $("#bookingTable").tablesorter(); 
 
 
 });

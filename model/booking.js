@@ -28,7 +28,7 @@ Booking.generateREF = function() {
 Booking.getAll = function(callback) {
 	pool.getConnection(function(err, connection) {
     // Use the connection
-    connection.query('SELECT * from reservation, seat, passenger, flight where reservation.seat_id = seat.sid and passenger.pid = reservation.passenger_id and reservation.flight_no = seat.flight_no and seat.flight_no = flight.fno and reservation.flight_time = seat.flight_time',
+    connection.query('SELECT * from reservation, seat, passenger, flight where reservation.seat_id = seat.sid and passenger.pid = reservation.passenger_id and reservation.flight_no = seat.flight_no and seat.flight_no = flight.fno and reservation.flight_time = seat.flight_time ORDER BY book_time DESC',
     	function(err, rows, fields) {
     		if (err) {
     			return callback(err.code, null);
